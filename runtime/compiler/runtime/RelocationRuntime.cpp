@@ -955,7 +955,7 @@ TR_SharedCacheRelocationRuntime::checkAOTHeaderFlags(TR_FrontEnd *fe, TR_AOTHead
    TR_J9VMBase *fej9 = (TR_J9VMBase *)fe;
    bool defaultMessage = true;
 
-   if (!TR::Compiler->target.cpu.isCompatible((TR_Processor)hdrInCache->processorSignature, hdrInCache->processorFeatureFlags))
+   if (!TR::Compiler->target.cpu.isCompatible(hdrInCache->processorDescription))
       defaultMessage = generateError("AOT header validation failed: Processor incompatible.");
    if ((featureFlags & TR_FeatureFlag_sanityCheckBegin) != (hdrInCache->featureFlags & TR_FeatureFlag_sanityCheckBegin))
       defaultMessage = generateError("AOT header validation failed: Processor feature sanity bit mangled.");
@@ -1053,7 +1053,7 @@ TR_SharedCacheRelocationRuntime::validateAOTHeader(TR_FrontEnd *fe, J9VMThread *
          }
       else if
          (hdrInCache->featureFlags != featureFlags ||
-          !TR::Compiler->target.cpu.isCompatible((TR_Processor)hdrInCache->processorSignature, hdrInCache->processorFeatureFlags)
+          !TR::Compiler->target.cpu.isCompatible(hdrInCache->processorDescription)
          )
          {
          checkAOTHeaderFlags(fe, hdrInCache, featureFlags);
@@ -1123,18 +1123,16 @@ TR_SharedCacheRelocationRuntime::createAOTHeader(TR_FrontEnd *fe)
       strncpy(aotHeaderVersion->vmBuildVersion, EsBuildVersionString, sizeof(EsBuildVersionString));
       strncpy(aotHeaderVersion->jitBuildVersion, TR_BUILD_NAME, std::min(strlen(TR_BUILD_NAME), sizeof(aotHeaderVersion->jitBuildVersion)));
 
-      aotHeader->processorSignature = TR::Compiler->target.cpu.id();
       aotHeader->gcPolicyFlag = javaVM()->memoryManagerFunctions->j9gc_modron_getWriteBarrierType(javaVM());
       aotHeader->lockwordOptionHashValue = getCurrentLockwordOptionHashValue(javaVM());
       aotHeader->compressedPointerShift = javaVM()->memoryManagerFunctions->j9gc_objaccess_compressedPointersShift(javaVM()->internalVMFunctions->currentVMThread(javaVM()));
-
-      aotHeader->processorFeatureFlags = TR::Compiler->target.cpu.getProcessorFeatureFlags();
-
       // Set up other feature flags
       aotHeader->featureFlags = generateFeatureFlags(fe);
 
       // Set ArrayLet Size if supported
       aotHeader->arrayLetLeafSize = TR::Compiler->om.arrayletLeafSize();
+
+      aotHeader->processorDescription = TR::Compiler->target.cpu.getProcessorDescription();
       }
 
    return aotHeader;

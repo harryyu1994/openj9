@@ -31,6 +31,7 @@
 #include "runtime/HWProfiler.hpp"
 #include "env/VMJ9.h"
 #include "env/J9CPU.hpp"
+#include "omrport.h"
 
 namespace TR { class CompilationInfo; }
 class TR_RelocationRecord;
@@ -95,14 +96,13 @@ typedef struct TR_AOTHeader {
     uintptr_t *relativeMethodMetaDataTable;
     uintptr_t architectureAndOs;
     uintptr_t endiannessAndWordSize;
-    uintptr_t processorSignature;
     uintptr_t featureFlags;
     uintptr_t vendorId;
     uintptr_t gcPolicyFlag;
     uintptr_t compressedPointerShift;
     uint32_t lockwordOptionHashValue;
     int32_t   arrayLetLeafSize;
-    TR_ProcessorFeatureFlags processorFeatureFlags;
+    OMRProcessorDesc processorDescription;
 } TR_AOTHeader;
 
 typedef struct TR_AOTRuntimeInfo {
