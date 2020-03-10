@@ -499,7 +499,7 @@
 		<!-- Variations are passed to the client via the CLIENT_PROGRAM property from $JVM_OPTIONS; neither the test harness nor the server care about these. -->
 		<variations>
 			<variation>NoOptions</variation>
-			<variation>-Xshareclasses:none -Xjit:optLevel=hot</variation>
+			<variation>-Xshareclasses:none</variation>
 		</variations>
 		<!-- Check if the JITServer launcher exists and if so start the test and
 			 - specify the executables for the client and server via the CLIENT_EXE and SERVER_EXE properties respectively,
