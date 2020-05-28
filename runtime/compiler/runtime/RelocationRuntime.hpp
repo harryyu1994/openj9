@@ -115,6 +115,9 @@ typedef struct TR_AOTRuntimeInfo {
 }
 #endif
 
+extern J9_CFUNC void
+printAOTHeader(const void* aotHeaderAddress, char * buff, size_t buffSize);
+
 class TR_RelocationRuntime {
    public:
       TR_ALLOC(TR_Memory::Relocation)

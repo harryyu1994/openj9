@@ -4509,7 +4509,7 @@ SH_CacheMap::getJavacoreData(J9JavaVM *vm, J9SharedClassJavacoreDataDescriptor* 
 					descriptor->objectBytes -
 					descriptor->debugAreaSize;
 	} else {
-		/* otherBytes does not make sence to multi-layer cache */
+		/* otherBytes does not make sense to multi-layer cache */
 		descriptor->otherBytes = 0;
 	}
 	
@@ -5191,6 +5191,14 @@ SH_CacheMap::printCacheStatsTopLayerStatsHelper(J9VMThread* currentThread, UDATA
 		CACHEMAP_PRINT1(J9NLS_DO_NOT_PRINT_MESSAGE_TAG, J9NLS_SHRC_CM_PRINTSTATS_FEATURE, "default");
 	}
 
+	j9tty_printf(_portlib, "\t");
+	J9SharedDataDescriptor firstDescriptor;
+	firstDescriptor.address = NULL;
+	findSharedData(currentThread, "J9AOTHeader", sizeof("J9AOTHeader") - 1, J9SHR_DATA_TYPE_AOTHEADER, FALSE, &firstDescriptor, NULL);
+	char buff[200];
+	currentThread->javaVM->jitConfig->printAOTHeader(firstDescriptor.address, buff, 200);
+	CACHEMAP_PRINT1(J9NLS_DO_NOT_PRINT_MESSAGE_TAG, J9NLS_SHRC_CM_PRINTSTATS_PROCESSOR_FEATURES, buff);
+
 	j9tty_printf(_portlib, "\n");
 	if (true == this->_ccHead->getIsNoLineNumberContentEnabled()) {
 		if (true == this->_ccHead->getIsLineNumberContentEnabled()) {
@@ -5354,6 +5362,7 @@ SH_CacheMap::printCacheStatsAllLayersStatsHelper(J9VMThread* currentThread, UDAT
 	CACHEMAP_FMTPRINT1(J9NLS_DO_NOT_PRINT_MESSAGE_TAG, J9NLS_SHRC_CM_PRINTSTATS_SUMMARY_NUM_STALE_CLASSES_V2, javacoreData->numStaleClasses);
 	CACHEMAP_FMTPRINT1(J9NLS_DO_NOT_PRINT_MESSAGE_TAG, J9NLS_SHRC_CM_PRINTSTATS_SUMMARY_PERC_STALE_CLASSES_V2, javacoreData->percStale);
 }
+
 /**
  * Print stats on an existing cache
  * 
@@ -5424,7 +5433,6 @@ SH_CacheMap::printCacheStats(J9VMThread* currentThread, UDATA showFlags, U_64 ru
 			printCacheStatsTopLayerSummaryStatsHelper(currentThread, showFlags, runtimeFlags, &javacoreData);
 		}
 	}
-
 	return 0;
 }
 
