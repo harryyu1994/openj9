@@ -1017,7 +1017,7 @@ TR_SharedCacheRelocationRuntime::getProcessorDescriptionFromSCC(TR_FrontEnd *fe,
 
    const void* result = firstDescriptor.address;
    TR_ASSERT_FATAL(result, "No Shared Class Cache available for Processor Description\n");
-   TR_AOTHeader * hdrInCache = (TR_AOTHeader * )result;
+   TR_AOTHeader * hdrInCache = (TR_AOTHeader *)result;
    return hdrInCache->processorDescription;
    }
 
@@ -1404,3 +1404,36 @@ TR_JITServerRelocationRuntime::copyDataToCodeCache(const void *startAddress, siz
    return coldCodeStart;
    }
 #endif /* defined(J9VM_OPT_JITSERVER) */
+
+void
+printAOTHeader(const void* aotHeaderAddress, char * buff, size_t buffSize)
+   {
+   if (!aotHeaderAddress)
+      {
+      strncat(buff, "null", buffSize);
+      return;
+      }
+
+   PORT_ACCESS_FROM_PORT(TR::Compiler->portLib);
+   TR_AOTHeader * hdrInCache = (TR_AOTHeader *)aotHeaderAddress;
+
+   OMRProcessorDesc processorDescription = hdrInCache->processorDescription;
+   OMRPORT_ACCESS_FROM_OMRPORT(TR::Compiler->omrPortLib);
+   bool first = true;
+   for (size_t i = 0; i < OMRPORT_SYSINFO_FEATURES_SIZE; i++)
+      {
+      for (int j = 0; j < 32; j++) 
+         {
+         if (processorDescription.features[i] & (1<<j))
+            {
+            uint32_t feature = i * 32 + j;
+            if (first)
+               first = false;
+            else
+               strncat(buff, " ", buffSize);
+            strncat(buff, omrsysinfo_get_processor_feature_name(feature), buffSize);
+            }
+         }
+      }
+   return;
+   }
