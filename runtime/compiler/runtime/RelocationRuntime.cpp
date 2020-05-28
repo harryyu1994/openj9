@@ -773,6 +773,13 @@ TR_RelocationRuntime::validateAOTHeader(TR_FrontEnd *fe, J9VMThread *curThread)
    return false;
    }
 
+OMRProcessorDesc
+TR_RelocationRuntime::getProcessorDescription(TR_FrontEnd *fe, J9VMThread *curThread)
+   {
+   TR_ASSERT(0, "Error: getProcessorDescription not supported in this relocation runtime");
+   return OMRProcessorDesc();
+   }
+
 #if defined(J9VM_OPT_JITSERVER)
 J9JITExceptionTable *
 TR_RelocationRuntime::copyMethodMetaData(J9JITDataCacheHeader *dataCacheHeader)
@@ -1001,6 +1008,27 @@ TR_SharedCacheRelocationRuntime::getCurrentLockwordOptionHashValue(J9JavaVM *vm)
    return currentLockwordOptionHashValue;
    }
 
+OMRProcessorDesc
+TR_SharedCacheRelocationRuntime::getProcessorDescription(TR_FrontEnd *fe, J9VMThread *curThread)
+   {
+   TR_J9VMBase *fej9 = (TR_J9VMBase *)fe;
+   J9SharedDataDescriptor firstDescriptor;
+   firstDescriptor.address = NULL;
+   javaVM()->sharedClassConfig->findSharedData(curThread,
+                                             aotHeaderKey,
+                                             aotHeaderKeyLength,
+                                             J9SHR_DATA_TYPE_AOTHEADER,
+                                             FALSE,
+                                             &firstDescriptor,
+                                             NULL);
+
+   const void* result = firstDescriptor.address;
+   TR_ASSERT_FATAL(result, "No Shared Class Cache available for Processor Description\n");
+   TR_AOTHeader * hdrInCache = (TR_AOTHeader * )result;
+   return hdrInCache->processorDescription;
+   }
+
+
 // This function currently does not rely on the object beyond the v-table override (compiled as static without any problems).
 // If this changes, we will need to look further into whether its users risk concurrent access.
 bool
@@ -1118,7 +1146,20 @@ TR_SharedCacheRelocationRuntime::createAOTHeader(TR_FrontEnd *fe)
       aotHeader->gcPolicyFlag = javaVM()->memoryManagerFunctions->j9gc_modron_getWriteBarrierType(javaVM());
       aotHeader->lockwordOptionHashValue = getCurrentLockwordOptionHashValue(javaVM());
       aotHeader->compressedPointerShift = javaVM()->memoryManagerFunctions->j9gc_objaccess_compressedPointersShift(javaVM()->internalVMFunctions->currentVMThread(javaVM()));
-      aotHeader->processorDescription = TR::Compiler->target.cpu.getProcessorDescription();
+
+      if (TRUE == javaVM()->sharedCacheAPI->inContainer || TRUE == javaVM()->sharedCacheAPI->sharedCachePortable)
+         {
+         if (TRUE == javaVM()->sharedCacheAPI->inContainer)
+            printf("inContainer is TRUE\n");
+         if (TRUE == javaVM()->sharedCacheAPI->sharedCachePortable)
+            printf("portable is TRUE\n");
+         TR::Compiler->relocatableTarget.cpu = TR::CPU::detectRelocatable(TR::Compiler->omrPortLib);
+         aotHeader->processorDescription = TR::Compiler->relocatableTarget.cpu.getProcessorDescription();
+         }
+      else
+         {
+         aotHeader->processorDescription = TR::Compiler->target.cpu.getProcessorDescription();
+         }
 
       // Set up other feature flags
       aotHeader->featureFlags = generateFeatureFlags(fe);
