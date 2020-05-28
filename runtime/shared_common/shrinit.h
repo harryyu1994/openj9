@@ -195,6 +195,7 @@ typedef struct J9SharedClassesOptions {
 #define OPTION_LAYER_EQUALS "layer="
 #define OPTION_CREATE_LAYER "createLayer"
 #define OPTION_NO_PERSISTENT_DISK_SPACE_CHECK "noPersistentDiskSpaceCheck"
+#define OPTION_PORTABLE "portable"
 
 /* public options for printallstats= and printstats=  */
 #define SUB_OPTION_PRINTSTATS_ALL "all"
@@ -275,6 +276,7 @@ typedef struct J9SharedClassesOptions {
 #define RESULT_DO_CREATE_LAYER 52
 #define RESULT_DO_PRINT_TOP_LAYER_STATS 53
 #define RESULT_DO_PRINT_TOP_LAYER_STATS_EQUALS 54
+#define RESULT_DO_PORTABLE 55
 
 #define PARSE_TYPE_EXACT 1
 #define PARSE_TYPE_STARTSWITH 2
