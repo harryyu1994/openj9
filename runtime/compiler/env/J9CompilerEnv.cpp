@@ -27,7 +27,11 @@
 #include "j9.h"
 
 J9::CompilerEnv::CompilerEnv(J9JavaVM *vm, TR::RawAllocator raw, const TR::PersistentAllocatorKit &persistentAllocatorKit) :
+#if defined(TR_HOST_ARM) || defined(TR_HOST_ARM64)
+   OMR::CompilerEnvConnector(raw, persistentAllocatorKit),
+#else
    OMR::CompilerEnvConnector(raw, persistentAllocatorKit, OMRPORT_FROM_J9PORT(vm->portLibrary)),
+#endif
    portLib(vm->portLibrary),
    javaVM(vm)
    {
