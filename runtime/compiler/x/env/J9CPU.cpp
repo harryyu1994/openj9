@@ -69,8 +69,11 @@ J9::X86::CPU::hasPopulationCountInstruction()
 bool
 J9::X86::CPU::isCompatible(const OMRProcessorDesc& processorDescription)
    {
+   printf("in J9::X86::CPU::isCompatible\n");
    for (int i = 0; i < OMRPORT_SYSINFO_FEATURES_SIZE; i++)
       {
+      printf("feature %d, self is %x", i, self()->getProcessorDescription().features[i]);
+      printf("feature %d, self is %x", i, processorDescription.features[i]);
       // Check to see if the current processor contains all the features that code cache's processor has
       if ((processorDescription.features[i] & self()->getProcessorDescription().features[i]) != processorDescription.features[i])
          return false;
