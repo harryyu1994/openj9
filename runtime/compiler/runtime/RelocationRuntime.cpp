@@ -949,6 +949,13 @@ TR_SharedCacheRelocationRuntime::checkAOTHeaderFlags(TR_AOTHeader *hdrInCache, i
    {
    bool defaultMessage = true;
 
+   printf ("in TR_SharedCacheRelocationRuntime::checkAOTHeaderFlags, hdrInCache->processorDescription: %d \n", hdrInCache->processorDescription.processor);
+
+   for (int i = 0; i < 5; i++)
+   {
+      printf ("feature %d, %x \n", i, hdrInCache->processorDescription.features[i]);
+   }
+
    if (!TR::Compiler->target.cpu.isCompatible(hdrInCache->processorDescription))
    {
       printf("AOT header validation failed: Processor incompatible.\n");
@@ -1123,6 +1130,12 @@ TR_SharedCacheRelocationRuntime::createAOTHeader(TR_FrontEnd *fe)
       aotHeader->compressedPointerShift = javaVM()->memoryManagerFunctions->j9gc_objaccess_compressedPointersShift(javaVM()->internalVMFunctions->currentVMThread(javaVM()));
       aotHeader->processorDescription = TR::Compiler->target.cpu.getProcessorDescription();
 
+      printf ("in TR_SharedCacheRelocationRuntime::createAOTHeader: %d \n", hdrInCache->processorDescription.processor);
+
+      for (int i = 0; i < 5; i++)
+      {
+         printf ("feature %d, %x \n", i, hdrInCache->processorDescription.features[i]);
+      }
       // Set up other feature flags
       aotHeader->featureFlags = generateFeatureFlags(fe);
 
