@@ -123,10 +123,29 @@ J9::Z::CPU::applyUserOptions()
 
    printf ("in J9::Z::CPU::applyUserOptions \n");
    printf ("process type %d\n", _processorDescription.processor)
-   for (int i = 0; i < 5; i++)
+   int i = 0;
+   for (i = 0; i < 5; i++)
    {
       printf("feature %d, %x \n", i, _processorDescription.features[i]);
    }
+
+   static bool turnOn = feGetEnv("TURNON") ? true : false;
+   if (turnOn)
+      omrsysinfo_processor_set_feature(&_processorDescription, OMR_FEATUTURE_S390_DFP, TRUE);
+   else
+      omrsysinfo_processor_set_feature(&_processorDescription, OMR_FEATUTURE_S390_DFP, FALSE);
+   // static bool turnOnRandom = feGetEnv("TR_HARRYTURNONRANDOM") ? true : false;
+   // if (turnOnRandom)
+   //    omrsysinfo_processor_set_feature(&_processorDescription, OMR_FEATURE_X86_MCA, TRUE);
+
+   // printf("in J9::X86::CPU::applyUserOptions \n");
+   // printf("processor: %d \n", _processorDescription.processor);
+   // for (int i = 0; i < 5; i++)
+   // {
+   //    printf("feature flags %d, %x \n", i, _processorDescription.features[i]);
+   // }
+
+
    }
 
 int32_t
