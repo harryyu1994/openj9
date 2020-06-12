@@ -753,6 +753,7 @@ TR_J9VM::initializeProcessorType()
       }
    else if (TR::Compiler->target.cpu.isX86())
       {
+      TR::Compiler->target.cpu.applyUserOptions();
       const char *vendor = TR::Compiler->target.cpu.getProcessorVendorId();
       uint32_t processorSignature = TR::Compiler->target.cpu.getProcessorSignature();
 

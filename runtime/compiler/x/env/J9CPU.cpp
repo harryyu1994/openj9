@@ -275,3 +275,14 @@ J9::X86::CPU::supports_feature_test(uint32_t feature)
       }
    return false;
    }
+
+J9::X86::CPU::applyUserOptions()
+   {
+   static bool disableCMOV = feGetEnv("TR_HARRYDISABLECMOV") ? true : false;
+   if (disableCMOV)
+      omrsysinfo_processor_set_feature(&_processorDescription, OMR_FEATURE_X86_CMOV, FALSE);
+   
+   static bool turnOnRandom = feGetEnv("TR_HARRYTURNONRANDOM") ? true : false;
+   if (turnOnRandom)
+      omrsysinfo_processor_set_feature(&_processorDescription, OMR_FEATURE_X86_MCA, FALSE);
+   }

@@ -949,13 +949,6 @@ TR_SharedCacheRelocationRuntime::checkAOTHeaderFlags(TR_AOTHeader *hdrInCache, i
    {
    bool defaultMessage = true;
 
-   printf ("in TR_SharedCacheRelocationRuntime::checkAOTHeaderFlags, hdrInCache->processorDescription: %d \n", hdrInCache->processorDescription.processor);
-
-   for (int i = 0; i < 5; i++)
-   {
-      printf ("feature %d, %x \n", i, hdrInCache->processorDescription.features[i]);
-   }
-
    if (!TR::Compiler->target.cpu.isCompatible(hdrInCache->processorDescription))
    {
       printf("AOT header validation failed: Processor incompatible.\n");
@@ -1035,6 +1028,14 @@ TR_SharedCacheRelocationRuntime::validateAOTHeader(TR_FrontEnd *fe, J9VMThread *
       {
       /* check compatibility */
       TR_AOTHeader * hdrInCache = (TR_AOTHeader * )result;
+
+      printf ("TR_SharedCacheRelocationRuntime::validateAOTHeader, hdrInCache->processorDescription: %d \n", hdrInCache->processorDescription.processor);
+
+      for (int i = 0; i < 5; i++)
+      {
+         printf ("hdrInCache feature %d, %x \n", i, hdrInCache->processorDescription.features[i]);
+      }
+
 
       intptr_t featureFlags = generateFeatureFlags(fe);
 
