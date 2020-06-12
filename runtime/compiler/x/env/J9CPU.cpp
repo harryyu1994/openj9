@@ -276,7 +276,7 @@ J9::X86::CPU::supports_feature_test(uint32_t feature)
    return false;
    }
 
-J9::X86::CPU::applyUserOptions()
+void J9::X86::CPU::applyUserOptions()
    {
    static bool disableCMOV = feGetEnv("TR_HARRYDISABLECMOV") ? true : false;
    if (disableCMOV)
