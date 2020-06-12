@@ -67,6 +67,7 @@ public:
 
    bool is_test(OMRProcessorArchitecture p);
    bool supports_feature_test(uint32_t feature);
+   void applyUserOptions();
    };
 
 }
