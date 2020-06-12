@@ -109,6 +109,11 @@ J9::Power::CPU::supportsDecimalFloatingPoint()
 bool
 J9::Power::CPU::isCompatible(const OMRProcessorDesc& processorDescription)
    {
+   printf("in J9 Power CPU isCompatible\n");
+
+   printf("self processor %d \n", self()->getProcessorDescription().processor);
+   printf("other processor %d \n", processorDescription.processor);
+   
    OMRProcessorArchitecture targetProcessor = self()->getProcessorDescription().processor;
    OMRProcessorArchitecture processor = processorDescription.processor;
    // Backwards compatibility only applies to p4,p5,p6,p7 and onwards
