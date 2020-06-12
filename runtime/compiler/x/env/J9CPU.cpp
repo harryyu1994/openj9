@@ -286,7 +286,7 @@ void J9::X86::CPU::applyUserOptions()
    
    static bool turnOnRandom = feGetEnv("TR_HARRYTURNONRANDOM") ? true : false;
    if (turnOnRandom)
-      omrsysinfo_processor_set_feature(&_processorDescription, OMR_FEATURE_X86_MCA, FALSE);
+      omrsysinfo_processor_set_feature(&_processorDescription, OMR_FEATURE_X86_MCA, TRUE);
 
    printf("in J9::X86::CPU::applyUserOptions \n");
    printf("processor: %d \n", _processorDescription.processor);
