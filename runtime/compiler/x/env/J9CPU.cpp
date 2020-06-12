@@ -278,6 +278,8 @@ J9::X86::CPU::supports_feature_test(uint32_t feature)
 
 void J9::X86::CPU::applyUserOptions()
    {
+   OMRPORT_ACCESS_FROM_OMRPORT(TR::Compiler->omrPortLib);
+
    static bool disableCMOV = feGetEnv("TR_HARRYDISABLECMOV") ? true : false;
    if (disableCMOV)
       omrsysinfo_processor_set_feature(&_processorDescription, OMR_FEATURE_X86_CMOV, FALSE);
