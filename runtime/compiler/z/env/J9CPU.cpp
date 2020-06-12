@@ -491,19 +491,21 @@ bool
 J9::Z::CPU::isCompatible(const OMRProcessorDesc& processorDescription)
    {
    printf("in J9::Z::CPU::isCompatible \n");
-   printf("self processor %d\n", _processorDescription.processor);
+   printf("self processor %d\n", self()->getProcessorDescription().processor);
    printf("other processor %d\n", processorDescription.processor);
+
+   int i = 0;
+   for (i = 0; i < OMRPORT_SYSINFO_FEATURES_SIZE; i++)
+   {
+      printf("self processor feature %d, %x \n", i, self()->getProcessorDescription().features[i]);
+      printf("other processor feature %d, %x \n", i, processorDescription.features[i]);
+   }
+   
+
    if (!self()->isAtLeast(processorDescription.processor))
       {
       return false;
       }
-
-   for (int i = 0; i < OMRPORT_SYSINFO_FEATURES_SIZE; i++)
-   {
-      printf("self processor feature %d, %x \n", _processorDescription.features[i]);
-      printf("other processor feature %d, %x \n", processorDescription.features[i]);
-   }
-
    for (int i = 0; i < OMRPORT_SYSINFO_FEATURES_SIZE; i++)
       {
       // Check to see if the current processor contains all the features that code cache's processor has
