@@ -1130,11 +1130,11 @@ TR_SharedCacheRelocationRuntime::createAOTHeader(TR_FrontEnd *fe)
       aotHeader->compressedPointerShift = javaVM()->memoryManagerFunctions->j9gc_objaccess_compressedPointersShift(javaVM()->internalVMFunctions->currentVMThread(javaVM()));
       aotHeader->processorDescription = TR::Compiler->target.cpu.getProcessorDescription();
 
-      printf ("in TR_SharedCacheRelocationRuntime::createAOTHeader: %d \n", hdrInCache->processorDescription.processor);
+      printf ("in TR_SharedCacheRelocationRuntime::createAOTHeader: %d \n", aotHeader->processorDescription.processor);
 
       for (int i = 0; i < 5; i++)
       {
-         printf ("feature %d, %x \n", i, hdrInCache->processorDescription.features[i]);
+         printf ("feature %d, %x \n", i, aotHeader->processorDescription.features[i]);
       }
       // Set up other feature flags
       aotHeader->featureFlags = generateFeatureFlags(fe);
