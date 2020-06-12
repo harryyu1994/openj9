@@ -121,11 +121,11 @@ J9::Z::CPU::applyUserOptions()
          }
       }
 
-   static bool turnOn = feGetEnv("TURNON") ? true : false;
-   if (turnOn)
-      omrsysinfo_processor_set_feature(&_processorDescription, OMR_FEATURE_S390_DFP, TRUE);
-   else
+   static bool turnOff = feGetEnv("TURNOFF") ? true : false;
+   if (turnOff)
       omrsysinfo_processor_set_feature(&_processorDescription, OMR_FEATURE_S390_DFP, FALSE);
+   else
+      omrsysinfo_processor_set_feature(&_processorDescription, OMR_FEATURE_S390_DFP, TRUE);
 
    printf ("in J9::Z::CPU::applyUserOptions \n");
    printf ("process type %d\n", _processorDescription.processor);
