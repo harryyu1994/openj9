@@ -200,6 +200,37 @@ J9::Compilation::Compilation(int32_t id,
          }
       }
 
+   // debug code to be removed
+   if (((TR_J9VMBase *)fe)->isAOT_DEPRECATED_DO_NOT_USE())
+   {
+      printf("This is an AOT compilation\n");
+
+      printf("Target CPU info\n");
+
+      printf("processor: %d \n", _target.cpu.getProcessorDescription().processor);
+
+      int i = 0;
+      for (i = 0; i < 5; i++)
+      {
+         printf("feature %d: %x \n", i, _target.cpu.getProcessorDescription().features[i]);
+      }
+   }
+   else
+   {
+      printf("This is a JIT compilation\n");
+
+      printf("Target CPU info\n");
+
+      printf("processor: %d \n", _target.cpu.getProcessorDescription().processor);
+
+      int i = 0;
+      for (i = 0; i < 5; i++)
+      {
+         printf("feature %d: %x \n", i, _target.cpu.getProcessorDescription().features[i]);
+      }
+   }
+
+
    _symbolValidationManager = new (self()->region()) TR::SymbolValidationManager(self()->region(), compilee);
 
    _aotClassClassPointer = NULL;

@@ -1158,8 +1158,16 @@ TR_SharedCacheRelocationRuntime::createAOTHeader(TR_FrontEnd *fe)
          }
       else
          {
+         printf("getProcessorDescription b/c both inContainer & portable are false\n");
          aotHeader->processorDescription = TR::Compiler->target.cpu.getProcessorDescription();
          }
+
+      printf("AOTHeader processor: %d\n", aotHeader->processorDescription.processor);
+      int i = 0;
+      for (i = 0; i < 5; i++)
+      {
+         printf("AOTHeader features: %d %x\n", i, aotHeader->processorDescription.features[i]);
+      }
 
       // Set up other feature flags
       aotHeader->featureFlags = generateFeatureFlags(fe);

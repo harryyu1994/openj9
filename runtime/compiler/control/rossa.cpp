@@ -1915,6 +1915,13 @@ aboutToBootstrap(J9JavaVM * javaVM, J9JITConfig * jitConfig)
          else
             {
             TR::Compiler->relocatableTarget.cpu = TR::CPU(compInfo->reloRuntime()->getProcessorDescription(fe, curThread));
+            printf("overwriting relocatableTarget because there is an existing cache\n");
+            printf("relocatableTarget processor %d \n", TR::Compiler->relocatableTarget.cpu.getProcessorDescription().processor);
+            int i = 0;
+            for (i = 0; i < 5; i++) 
+               {
+               printf("relocatableTarget processor features %d, %x \n", i, TR::Compiler->relocatableTarget.cpu.getProcessorDescription().features[i]);
+               }
             }
          }
 
