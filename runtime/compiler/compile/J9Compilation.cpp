@@ -203,30 +203,40 @@ J9::Compilation::Compilation(int32_t id,
    // debug code to be removed
    if (((TR_J9VMBase *)fe)->isAOT_DEPRECATED_DO_NOT_USE())
    {
-      printf("This is an AOT compilation\n");
-
-      printf("Target CPU info\n");
-
-      printf("processor: %d \n", _target.cpu.getProcessorDescription().processor);
-
-      int i = 0;
-      for (i = 0; i < 5; i++)
+      static int AOTCompCount = 0;
+      if (AOTCompCount <= 2)
       {
-         printf("feature %d: %x \n", i, _target.cpu.getProcessorDescription().features[i]);
+         printf("This is an AOT compilation\n");
+
+         printf("Target CPU info\n");
+
+         printf("processor: %d \n", _target.cpu.getProcessorDescription().processor);
+
+         int i = 0;
+         for (i = 0; i < 5; i++)
+         {
+            printf("feature %d: %x \n", i, _target.cpu.getProcessorDescription().features[i]);
+         }
+         AOTCompCount += 1;
       }
    }
    else
    {
-      printf("This is a JIT compilation\n");
-
-      printf("Target CPU info\n");
-
-      printf("processor: %d \n", _target.cpu.getProcessorDescription().processor);
-
-      int i = 0;
-      for (i = 0; i < 5; i++)
+      static int JITCompCount = 0;
+      if (JITCompCount <= 2)
       {
-         printf("feature %d: %x \n", i, _target.cpu.getProcessorDescription().features[i]);
+         printf("This is a JIT compilation\n");
+
+         printf("Target CPU info\n");
+
+         printf("processor: %d \n", _target.cpu.getProcessorDescription().processor);
+
+         int i = 0;
+         for (i = 0; i < 5; i++)
+         {
+            printf("feature %d: %x \n", i, _target.cpu.getProcessorDescription().features[i]);
+         }
+         JITCompCount += 1;
       }
    }
 
