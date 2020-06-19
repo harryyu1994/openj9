@@ -269,7 +269,7 @@ IDATA J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved)
 				if (FALSE == inContainer)
 					printf("sharedCacheAPI->inContainer is false\n");
 				else
-					prinft("sharedCacheAPI->inContainer is true\n");
+					printf("sharedCacheAPI->inContainer is true\n");
 
 				if (FALSE == inContainer) {
 					/* If -Xshareclasses is not used in the CML, let VM startup on non-fatal error.
