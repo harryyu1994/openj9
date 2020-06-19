@@ -33,6 +33,7 @@
 
 IDATA J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved) 
 {
+	printf("enter shrclssup.c's DLLmain\n");
 	IDATA returnVal = J9VMDLLMAIN_OK;
 	UDATA rc = 0;
 
@@ -265,6 +266,10 @@ IDATA J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved)
 			if (J9_SHARED_CACHE_DEFAULT_BOOT_SHARING(vm)) {
 				BOOLEAN inContainer = omrsysinfo_is_running_in_container();
 				/* Do not enable shared classes by default if running in Container */
+				if (FALSE == inContainer)
+					printf("sharedCacheAPI->inContainer is false\n");
+				else
+					prinft("sharedCacheAPI->inContainer is true\n");
 
 				if (FALSE == inContainer) {
 					/* If -Xshareclasses is not used in the CML, let VM startup on non-fatal error.

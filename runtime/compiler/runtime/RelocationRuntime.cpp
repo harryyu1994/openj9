@@ -1147,9 +1147,11 @@ TR_SharedCacheRelocationRuntime::createAOTHeader(TR_FrontEnd *fe)
       aotHeader->lockwordOptionHashValue = getCurrentLockwordOptionHashValue(javaVM());
       aotHeader->compressedPointerShift = javaVM()->memoryManagerFunctions->j9gc_objaccess_compressedPointersShift(javaVM()->internalVMFunctions->currentVMThread(javaVM()));
 
-      if (TRUE == javaVM()->sharedCacheAPI->inContainer || TRUE == javaVM()->sharedCacheAPI->sharedCachePortable)
+      OMRPORT_ACCESS_FROM_J9PORT(javaVM()->portLibrary);
+      BOOLEAN inContainer = omrsysinfo_is_running_in_container(); 
+      if (TRUE == inContainer || TRUE == javaVM()->sharedCacheAPI->sharedCachePortable)
          {
-         if (TRUE == javaVM()->sharedCacheAPI->inContainer)
+         if (TRUE == inContainer)
             printf("inContainer is TRUE\n");
          if (TRUE == javaVM()->sharedCacheAPI->sharedCachePortable)
             printf("portable is TRUE\n");
