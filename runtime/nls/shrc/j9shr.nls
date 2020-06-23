@@ -6889,10 +6889,3 @@ J9NLS_SHRC_CM_NEW_LAYER_CACHE_DESTROYED.system_action=The JVM terminates, unless
 J9NLS_SHRC_CM_NEW_LAYER_CACHE_DESTROYED.user_response=Use -Xshareclasses:name=<cacheName>,destroy to destroy all invalid layers (all the higher layers which are built on top of the modified layer) and retry.
 # END NON-TRANSLATABLE
 
-J9NLS_SHRC_SHRINIT_HELPTEXT_PORTABLE=Enable portable AOT code in the shared class cache.
-# START NON-TRANSLATABLE
-J9NLS_SHRC_SHRINIT_HELPTEXT_CREATE_LAYER.explanation=NOTAG
-J9NLS_SHRC_SHRINIT_HELPTEXT_CREATE_LAYER.system_action=
-J9NLS_SHRC_SHRINIT_HELPTEXT_CREATE_LAYER.user_response=
-# END NON-TRANSLATABLE
-
