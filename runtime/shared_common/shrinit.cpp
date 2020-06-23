@@ -1263,14 +1263,6 @@ j9shr_dump_help(J9JavaVM* vm, UDATA more)
 	tmpcstr = j9nls_lookup_message((J9NLS_INFO | J9NLS_DO_NOT_PRINT_MESSAGE_TAG), J9NLS_EXELIB_INTERNAL_HELP_XXDISABLEUSEGCSTARTUPHINTS, NULL);
 	j9file_printf(PORTLIB, J9PORT_TTY_OUT, "%s", tmpcstr);
 
-#if defined(J9X86)
-	tmpcstr = j9nls_lookup_message((J9NLS_INFO | J9NLS_DO_NOT_PRINT_MESSAGE_TAG), J9NLS_EXELIB_INTERNAL_HELP_XXSHARECLASSESPORTABLE, NULL);
-	j9file_printf(PORTLIB, J9PORT_TTY_OUT, "%s", tmpcstr);
-
-	tmpcstr = j9nls_lookup_message((J9NLS_INFO | J9NLS_DO_NOT_PRINT_MESSAGE_TAG), J9NLS_EXELIB_INTERNAL_HELP_XXNOSHARECLASSESPORTABLE, NULL);
-	j9file_printf(PORTLIB, J9PORT_TTY_OUT, "%s", tmpcstr);
-#endif /* defined(J9X86) */
-
 	j9file_printf(PORTLIB, J9PORT_TTY_OUT, "\n\n");
 }
 
