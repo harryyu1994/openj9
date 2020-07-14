@@ -1142,7 +1142,7 @@ TR_SharedCacheRelocationRuntime::createAOTHeader(TR_FrontEnd *fe)
       
       OMRPORT_ACCESS_FROM_J9PORT(javaVM()->portLibrary);
       BOOLEAN inContainer = omrsysinfo_is_running_in_container(); 
-      if (TRUE == inContainer || TRUE == javaVM()->sharedCacheAPI->sharedCachePortable)
+      if (TRUE == inContainer || TRUE == javaVM()->sharedCacheAPI->sharedCachePortable || true)
          {
          TR::Compiler->relocatableTarget.cpu = TR::CPU::detectRelocatable(TR::Compiler->omrPortLib);
          aotHeader->processorDescription = TR::Compiler->relocatableTarget.cpu.getProcessorDescription();
