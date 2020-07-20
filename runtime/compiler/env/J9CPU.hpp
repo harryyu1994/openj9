@@ -53,6 +53,7 @@ public:
    uint32_t getProcessorSignature() { TR_ASSERT(false, "Processor Signature not defined for this platform!"); return 0; }
 
    OMRProcessorArchitecture getProcessor() { return _processorDescription.processor; }
+   void printCPU();
    };
 }
 
