@@ -1122,7 +1122,7 @@ TR_SharedCacheRelocationRuntime::createAOTHeader(TR_FrontEnd *fe)
 
    TR_J9VMBase *fej9 = (TR_J9VMBase *)fe;
    TR_AOTHeader * aotHeader = (TR_AOTHeader *)j9mem_allocate_memory(sizeof(TR_AOTHeader), J9MEM_CATEGORY_JIT);
-
+   printf ("creating AOT header\n");
    if (aotHeader)
       {
       aotHeader->eyeCatcher = TR_AOTHeaderEyeCatcher;
@@ -1143,10 +1143,16 @@ TR_SharedCacheRelocationRuntime::createAOTHeader(TR_FrontEnd *fe)
          {
          TR::Compiler->relocatableTarget.cpu = TR::CPU::detectRelocatable(TR::Compiler->omrPortLib);
          aotHeader->processorDescription = TR::Compiler->relocatableTarget.cpu.getProcessorDescription();
+         printf ("loading processor features from relocatable target (handpicked)\n");
+         printf ("shared cache portable turned on!\n");
+         TR::Compiler->relocatableTarget.cpu.printCPU();
          }
       else
          {
          aotHeader->processorDescription = TR::Compiler->target.cpu.getProcessorDescription();
+         printf ("loading processor feature from target (current processor)\n");
+         printf ("shared cache portable turned off\n");
+         TR::Compiler->target.cpu.printCPU();
          }
 
       // Set up other feature flags
@@ -1429,6 +1435,7 @@ printAOTHeader(const void* aotHeaderAddress, char * buff, size_t buffSize)
             if (length >= 20)
                {
                strncat(buff, "\n\t                                       ", buffSize);
+               // 39 spaces
                length = 0;
                }
             else if (length != 0)

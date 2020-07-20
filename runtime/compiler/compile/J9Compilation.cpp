@@ -197,6 +197,14 @@ J9::Compilation::Compilation(int32_t id,
       if (((TR_J9VMBase *)fe)->isAOT_DEPRECATED_DO_NOT_USE() && TR::Compiler->target.cpu.isX86())
          {
          _target = TR::Compiler->relocatableTarget;
+         static int count = 0;
+         if (count < 10)
+            {
+            count += 1;
+            printf("It's an AOT compilation, setting _target to relocatableTarget\n");
+            printf("TR::Compiler->relocatableTarget.cpu: ");
+            TR::Compiler->relocatableTarget.cpu.printCPU();
+            }
          }
       }
 

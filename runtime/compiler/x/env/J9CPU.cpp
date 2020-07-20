@@ -52,10 +52,19 @@ J9::X86::CPU::detectRelocatable(OMRPortLibrary * const omrPortLib)
    OMRPORT_ACCESS_FROM_OMRPORT(omrPortLib);
    OMRProcessorDesc customProcessorDescription;
    memset(customProcessorDescription.features, 0, OMRPORT_SYSINFO_FEATURES_SIZE*sizeof(uint32_t));
+   printf("hand-picked: ");
    for (size_t i = 0; i < sizeof(enabledFeatures)/sizeof(uint32_t); i++)
       {
       omrsysinfo_processor_set_feature(&customProcessorDescription, enabledFeatures[i], TRUE);
+      printf(" %d ", enabledFeatures[i]);
+      printf(" %s ", omrsysinfo_get_processor_feature_name(enabledFeatures[i]));
       }
+   // need to verify enabledFeatures
+   printf(" %s\n");
+
+
+   printf("host: ");
+   TR::Compiler->target.cpu.printCPU();
 
    // Pick the older processor between our hand-picked processor and host processor to be the actual portable processor
    TR::CPU host = TR::CPU::detect(omrPortLib);

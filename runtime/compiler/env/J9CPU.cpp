@@ -49,3 +49,31 @@ J9::CPU::TO_PORTLIB_getJ9ProcessorDesc()
    return &processorDesc;
    }
 
+void
+J9::CPU::printCPU()
+   {
+   OMRPORT_ACCESS_FROM_OMRPORT(TR::Compiler->omrPortLib);
+   int length = 0;
+   char buff[500];
+   int buffSize = 500;
+   for (size_t i = 0; i < OMRPORT_SYSINFO_FEATURES_SIZE; i++)
+      {
+      for (int j = 0; j < 32; j++) 
+         {
+         if (_processorDescription.features[i] & (1<<j))
+            {
+            if (length > 0)
+               {
+               strncat(buff, " ", buffSize);
+               length += 1;
+               }
+            uint32_t feature = i * 32 + j;
+            const char * feature_name = omrsysinfo_get_processor_feature_name(feature);
+            strncat(buff, feature_name, buffSize);
+            length += strlen(feature_name);
+            }
+         }
+      }
+   printf ("%s\n", buff);
+   return;
+   }

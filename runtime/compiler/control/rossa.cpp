@@ -1918,6 +1918,10 @@ aboutToBootstrap(J9JavaVM * javaVM, J9JITConfig * jitConfig)
          else
             {
             TR::Compiler->relocatableTarget.cpu = TR::CPU(compInfo->reloRuntime()->getProcessorDescriptionFromSCC(fe, curThread));
+            printf ("Passed validateAOTHeader!\n");
+            printf ("Load from SCC and assign cpu to TR::Compiler->relocatableTarget.cpu\n");
+            printf ("TR::Compiler->relocatableTarget.cpu: ");
+            TR::Compiler->relocatableTarget.cpu.printCPU();
             }
          }
 
