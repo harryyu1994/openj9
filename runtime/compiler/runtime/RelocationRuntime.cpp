@@ -1406,32 +1406,43 @@ TR_JITServerRelocationRuntime::copyDataToCodeCache(const void *startAddress, siz
 #endif /* defined(J9VM_OPT_JITSERVER) */
 
 void
-printAOTHeader(const void* aotHeaderAddress, char * buff, size_t buffSize)
+printAOTHeader(J9JavaVM* javaVM, char * buff, size_t buffSize)
    {
-   if (!aotHeaderAddress)
+   J9SharedDataDescriptor firstDescriptor;
+   firstDescriptor.address = NULL;
+   javaVM->sharedClassConfig->findSharedData(currentThread, "J9AOTHeader", sizeof("J9AOTHeader") - 1, J9SHR_DATA_TYPE_AOTHEADER, FALSE, &firstDescriptor, NULL);
+   if (!firstDescriptor.address)
       {
       strncat(buff, "null", buffSize);
       return;
       }
 
    PORT_ACCESS_FROM_PORT(TR::Compiler->portLib);
-   TR_AOTHeader * hdrInCache = (TR_AOTHeader *)aotHeaderAddress;
+   TR_AOTHeader * hdrInCache = (TR_AOTHeader *)(firstDescriptor.address);
 
    OMRProcessorDesc processorDescription = hdrInCache->processorDescription;
    OMRPORT_ACCESS_FROM_OMRPORT(TR::Compiler->omrPortLib);
-   bool first = true;
+   int length = 0;
    for (size_t i = 0; i < OMRPORT_SYSINFO_FEATURES_SIZE; i++)
       {
       for (int j = 0; j < 32; j++) 
          {
          if (processorDescription.features[i] & (1<<j))
             {
-            uint32_t feature = i * 32 + j;
-            if (first)
-               first = false;
-            else
+            if (length >= 20)
+               {
+               strncat(buff, "\n\t                                       ", buffSize);
+               length = 0;
+               }
+            else if (length != 0)
+               {
                strncat(buff, " ", buffSize);
-            strncat(buff, omrsysinfo_get_processor_feature_name(feature), buffSize);
+               length += 1;
+               }
+            uint32_t feature = i * 32 + j;
+            const char * feature_name = omrsysinfo_get_processor_feature_name(feature);
+            strncat(buff, feature_name, buffSize);
+            length += strlen(feature_name);
             }
          }
       }

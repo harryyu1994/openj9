@@ -5192,11 +5192,9 @@ SH_CacheMap::printCacheStatsTopLayerStatsHelper(J9VMThread* currentThread, UDATA
 	}
 
 	j9tty_printf(_portlib, "\t");
-	J9SharedDataDescriptor firstDescriptor;
-	firstDescriptor.address = NULL;
-	findSharedData(currentThread, "J9AOTHeader", sizeof("J9AOTHeader") - 1, J9SHR_DATA_TYPE_AOTHEADER, FALSE, &firstDescriptor, NULL);
-	char buff[200];
-	currentThread->javaVM->jitConfig->printAOTHeader(firstDescriptor.address, buff, 200);
+	char buff[500];
+	if (currentThread->javaVM->jitConfig)
+		currentThread->javaVM->jitConfig->printAOTHeader(currentThread->javaVM, buff, 500);
 	CACHEMAP_PRINT1(J9NLS_DO_NOT_PRINT_MESSAGE_TAG, J9NLS_SHRC_CM_PRINTSTATS_PROCESSOR_FEATURES, buff);
 
 	j9tty_printf(_portlib, "\n");
