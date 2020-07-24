@@ -141,6 +141,8 @@ IDATA J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved)
 					runtimeFlags |= J9SHR_RUNTIMEFLAG_DISABLE_BCI;
 				}
 
+				Trc_SHR_portableSharedCache_enabled_or_disabled(vm->mainThread, "enabled");
+
 				/* Check for -XX:+ShareAnonymousClasses and -XX:-ShareAnonymousClasses; whichever comes later wins. Enable is set by default so we just need to disable when that's the case. */
 				argIndex1 = FIND_AND_CONSUME_ARG(EXACT_MATCH, VMOPT_XXENABLESHAREANONYMOUSCLASSES, NULL);
 				argIndex2 = FIND_AND_CONSUME_ARG(EXACT_MATCH, VMOPT_XXDISABLESHAREANONYMOUSCLASSES, NULL);
@@ -314,6 +316,7 @@ IDATA J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved)
 	{
 		UDATA loadFlags = 0;
 		UDATA nonfatal = 0;
+		Trc_SHR_portableSharedCache_enabled_or_disabled(vm->mainThread, "enabled");
 
 		/* Register this module with trace */
 		UT_MODULE_LOADED(J9_UTINTERFACE_FROM_VM(vm));

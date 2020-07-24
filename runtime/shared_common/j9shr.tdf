@@ -2990,3 +2990,5 @@ TraceEvent=Trc_SHR_API_j9shr_classStoreTransaction_start_cacheSoftFull_Event Ove
 
 TraceExit-Exception=Trc_SHR_CMI_Update_Exit5 Overhead=1 Level=2 Template="CMI Update: StoreIdentified failed to acquire _identifiedMutex. Returning -1."
 TraceExit-Exception=Trc_SHR_CMI_validate_Exit_IdentifiedMutex_Failed Overhead=1 Level=2 Template="CMI validate: Failed to acquire _identifiedMutex. Returning -1."
+
+TraceEvent=Trc_SHR_portableSharedCache_enabled_or_disabled Overhead=1 Level=3 Template="PortableSharedCache is %s"
