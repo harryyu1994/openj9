@@ -1406,6 +1406,12 @@
 		<output type="failure" caseSensitive="yes" regex="no">Processing dump event</output>
 	</test>
 
+	<test id="Test 66: Processor Features PrintStats Test : Ensure -Xshareclasses:printStats cache contains processor feature info" timeout="600" runPath=".">
+		<command>$JAVA_EXE$ $currentMode$,printStats -version</command>
+		<output type="required" caseSensitive="yes" regex="yes" javaUtilPattern="yes" showMatch="yes">Processor Features[\s]*= [\s]*</output>
+		<output type="failure" caseSensitive="yes" regex="yes" javaUtilPattern="yes" showMatch="yes">Processor Features[\s]*= null</output>
+	</test>
+
 	<test id="At end destroy cache for cleanup" timeout="600" runPath=".">
 		<command>$JAVA_EXE$ $currentMode$,destroy</command>
 		<output type="success" caseSensitive="yes" regex="no">Cache does not exist</output>
