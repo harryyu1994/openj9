@@ -1414,10 +1414,10 @@ TR_JITServerRelocationRuntime::copyDataToCodeCache(const void *startAddress, siz
  * @return void
  */
 void
-printAOTHeaderProcessorFeatures(const void* aotHeaderAddress, char * buff, const size_t BUFF_SIZE)
+printAOTHeaderProcessorFeatures(TR_AOTHeader * hdrInCache, char * buff, const size_t BUFF_SIZE)
    {
    memset(buff, 0, BUFF_SIZE*sizeof(char));
-   if (!aotHeaderAddress)
+   if (!hdrInCache)
       {
       strncat(buff, "null", BUFF_SIZE - strlen(buff) - 1);
       return;
@@ -1425,7 +1425,6 @@ printAOTHeaderProcessorFeatures(const void* aotHeaderAddress, char * buff, const
 
    PORT_ACCESS_FROM_PORT(TR::Compiler->portLib);
    OMRPORT_ACCESS_FROM_OMRPORT(TR::Compiler->omrPortLib);
-   TR_AOTHeader * hdrInCache = (TR_AOTHeader *)aotHeaderAddress;
    OMRProcessorDesc processorDescription = hdrInCache->processorDescription;
 
    int rowLength = 0;

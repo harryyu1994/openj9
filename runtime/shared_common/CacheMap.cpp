@@ -88,6 +88,8 @@ static void checkROMClassUTF8SRPs(J9ROMClass *romClass);
 #define FIND_ATTACHED_DATA_RETRY_COUNT 1
 #define FIND_ATTACHED_DATA_CORRUPT_WAIT_TIME 1
 
+struct TR_AOTHeader;
+
 /**
  * @param currentThread - the currentThread or NULL when called to collect javacore data
  *
@@ -5199,7 +5201,7 @@ SH_CacheMap::printCacheStatsTopLayerStatsHelper(J9VMThread* currentThread, UDATA
 		findSharedData(currentThread, "J9AOTHeader", sizeof("J9AOTHeader") - 1, J9SHR_DATA_TYPE_AOTHEADER, FALSE, &firstDescriptor, NULL);
 		const size_t BUFF_SIZE = 500;
 		char processorFeatures[BUFF_SIZE];
-		currentThread->javaVM->jitConfig->printAOTHeaderProcessorFeatures(firstDescriptor.address, processorFeatures, BUFF_SIZE);
+		currentThread->javaVM->jitConfig->printAOTHeaderProcessorFeatures((TR_AOTHeader *)firstDescriptor.address, processorFeatures, BUFF_SIZE);
 		CACHEMAP_PRINT1(J9NLS_DO_NOT_PRINT_MESSAGE_TAG, J9NLS_SHRC_CM_PRINTSTATS_PROCESSOR_FEATURES, processorFeatures);
 	}
 #endif /* defined(J9X86) */
