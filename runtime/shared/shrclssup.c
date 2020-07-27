@@ -141,7 +141,7 @@ IDATA J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved)
 					runtimeFlags |= J9SHR_RUNTIMEFLAG_DISABLE_BCI;
 				}
 
-#if defined(J9X86)
+#if defined(J9VM_ARCH_X86)
 				/* Check for -XX:+PortableSharedCache and -XX:-PortableSharedCache; whichever comes later wins.
 				 * These options should be checked before parseArgs() to allow -Xshareclasses:portable to override this option.
 				 * 
@@ -158,7 +158,7 @@ IDATA J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved)
 					OMRPORT_ACCESS_FROM_J9PORT(vm->portLibrary);
 					vm->sharedCacheAPI->sharedCachePortable = omrsysinfo_is_running_in_container();
 				}
-#endif /* defined(J9X86) */
+#endif /* defined(J9VM_ARCH_X86) */
 
 				/* Check for -XX:+ShareAnonymousClasses and -XX:-ShareAnonymousClasses; whichever comes later wins. Enable is set by default so we just need to disable when that's the case. */
 				argIndex1 = FIND_AND_CONSUME_ARG(EXACT_MATCH, VMOPT_XXENABLESHAREANONYMOUSCLASSES, NULL);
