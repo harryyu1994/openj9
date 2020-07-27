@@ -317,7 +317,7 @@ IDATA J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved)
 		UDATA loadFlags = 0;
 		UDATA nonfatal = 0;
 		Trc_SHR_portableSharedCache_enabled_or_disabled(vm->mainThread, "enabled");
-
+		Trc_SHR_VMInitStages_Event_RunningInContainer(vm->mainThread);
 		/* Register this module with trace */
 		UT_MODULE_LOADED(J9_UTINTERFACE_FROM_VM(vm));
 		Trc_SHR_VMInitStages_Event1(vm->mainThread);
