@@ -1631,7 +1631,7 @@ retry:
 		(UDATA)J9UTF8_LENGTH(J9ROMCLASS_CLASSNAME(clazz->romClass)),
 		J9UTF8_DATA(J9ROMCLASS_CLASSNAME(clazz->romClass)));
 
-	Trc_SHR_portableSharedCache_enabled_or_disabled(vmThread, "enabled");
+	Trc_VM_portableSharedCache_enabled_or_disabled(vmThread, "enabled");
 
 	if (!isField) {
 		J9JNINameAndSignature nas;

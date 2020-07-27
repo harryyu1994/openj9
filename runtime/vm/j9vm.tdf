@@ -795,3 +795,6 @@ TraceEvent=Trc_VM_GetCompleteNPEMessage_MissedBytecode Overhead=1 Level=1 Templa
 TraceExit=Trc_VM_GetCompleteNPEMessage_Exit Overhead=1 Level=3 Template="GetCompleteNPEMessage - npeMsg (%s)"
 
 TraceException=Trc_VM_CreateRAMClassFromROMClass_circularity2 noEnv Overhead=1 Level=1 Template="Class loading circularity detected"
+
+
+TraceEvent=Trc_VM_portableSharedCache_enabled_or_disabled Overhead=1 Level=3 Template="PortableSharedCache is %s"
