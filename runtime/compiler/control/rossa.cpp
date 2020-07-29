@@ -1759,6 +1759,7 @@ onLoadInternal(
 extern "C" int32_t
 aboutToBootstrap(J9JavaVM * javaVM, J9JITConfig * jitConfig)
    {
+   printf("about to bootstrap! if this is early enough we can know what value to set compressedshift to !\n");
    char isSMP;
    PORT_ACCESS_FROM_JAVAVM(javaVM);
    bool isSharedAOT = false;
@@ -1918,6 +1919,8 @@ aboutToBootstrap(J9JavaVM * javaVM, J9JITConfig * jitConfig)
          else
             {
             TR::Compiler->relocatableTarget.cpu = TR::CPU(compInfo->reloRuntime()->getProcessorDescriptionFromSCC(fe, curThread));
+            // getCompressedShiftFromSCC
+            // can we still change compressed shift over here?
             printf ("Passed validateAOTHeader!\n");
             printf ("Load from SCC and assign cpu to TR::Compiler->relocatableTarget.cpu\n");
             printf ("TR::Compiler->relocatableTarget.cpu: ");
