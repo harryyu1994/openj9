@@ -33,6 +33,7 @@
 
 IDATA J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved) 
 {
+	printf("in checking portable aot options\n");
 	IDATA returnVal = J9VMDLLMAIN_OK;
 	UDATA rc = 0;
 

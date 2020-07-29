@@ -1455,6 +1455,8 @@ scan_u64_memory_size_helper(J9JavaVM *javaVM, char **cursor, U_64 *value, const 
 jint 
 gcParseCommandLineAndInitializeWithValues(J9JavaVM *vm, IDATA *memoryParameters)
 {
+	printf("in gcParseCommandLineAndInitializeWithValues\n");
+
 	MM_GCExtensions *extensions = MM_GCExtensions::getExtensions(vm);
 	UDATA optionValue = 0;
 	IDATA index = 0;
