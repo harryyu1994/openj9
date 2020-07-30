@@ -3035,8 +3035,7 @@ gcInitializeDefaults(J9JavaVM* vm)
 	}
 
 	if (portable)
-		extensions->forcedShiftingCompressionAmount = 3;
-
+		extensions->shouldForceToLowMemoryHeapCeilingShift = true;
 
 	warnIfPageSizeNotSatisfied(vm,extensions);
 	j9mem_free_memory(memoryParameterTable);
