@@ -3034,7 +3034,8 @@ gcInitializeDefaults(J9JavaVM* vm)
 		// 	vm->sharedCacheAPI->sharedCachePortable = FALSE;
 	}
 
-
+	if (portable)
+		extensions->forcedShiftingCompressionAmount = 3;
 
 
 	warnIfPageSizeNotSatisfied(vm,extensions);
