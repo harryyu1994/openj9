@@ -3031,7 +3031,7 @@ gcInitializeDefaults(J9JavaVM* vm)
 			portable = true;
 		}
 		else {
-			printf ("mminit.cpp set portable options to false in container\n")
+			printf ("mminit.cpp set portable options to false in container\n");
 			portable = false;
 		}
 
@@ -3042,7 +3042,7 @@ gcInitializeDefaults(J9JavaVM* vm)
 	}
 
 	extensions->shouldForceToLowMemoryHeapCeilingShift = portable;
-	
+
 	warnIfPageSizeNotSatisfied(vm,extensions);
 	j9mem_free_memory(memoryParameterTable);
 	return J9VMDLLMAIN_OK;
