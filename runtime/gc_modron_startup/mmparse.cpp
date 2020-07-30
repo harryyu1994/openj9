@@ -1247,6 +1247,32 @@ gcParseXXArguments(J9JavaVM *vm)
 		}
 	}
 
+	{
+		IDATA portableSharedCacheIndex = FIND_ARG_IN_VMARGS(EXACT_MATCH, VMOPT_XXPORTABLESHAREDCACHE, NULL);
+		IDATA noportableSharedCacheIndex = FIND_ARG_IN_VMARGS(EXACT_MATCH, VMOPT_XXNOPORTABLESHAREDCACHE, NULL);
+		if (portableSharedCacheIndex > noportableSharedCacheIndex) {
+			printf ("mminit.cpp set portable options to true\n");
+			extensions->shouldForceToLowMemoryHeapCeilingShiftIfPossible = true;
+		}
+		else if (portableSharedCacheIndex < noportableSharedCacheIndex) {
+			printf ("mminit.cpp set portable options to false\n");
+			extensions->shouldForceToLowMemoryHeapCeilingShiftIfPossible = false;
+		}
+		else {
+			OMRPORT_ACCESS_FROM_J9PORT(vm->portLibrary);
+			if (TRUE == omrsysinfo_is_running_in_container()) {
+				printf ("mminit.cpp set portable options to true in container\n");
+				extensions->shouldForceToLowMemoryHeapCeilingShiftIfPossible = true;
+			}
+			else {
+				printf ("mminit.cpp set portable options to false in container\n");
+				extensions->shouldForceToLowMemoryHeapCeilingShiftIfPossible = false;
+			}
+		}
+		if (vm->sharedCacheAPI == NULL) {
+			printf(" vm shared cache api is null\n");
+		}
+	}
 	return 1;
 }
 
