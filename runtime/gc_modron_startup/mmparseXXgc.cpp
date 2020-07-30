@@ -59,6 +59,8 @@ gcParseXXgcArguments(J9JavaVM *vm, char *optArg)
 
 	extensions = MM_GCExtensions::getExtensions(vm);
 
+	IDATA argIndex1 = -1;
+    IDATA argIndex2 = -1;
 	argIndex1 = FIND_AND_CONSUME_ARG(EXACT_MATCH, VMOPT_XXPORTABLESHAREDCACHE, NULL);
 	argIndex2 = FIND_AND_CONSUME_ARG(EXACT_MATCH, VMOPT_XXNOPORTABLESHAREDCACHE, NULL);
 	if (argIndex2 > argIndex1) {
