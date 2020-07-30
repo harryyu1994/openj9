@@ -71,8 +71,8 @@ gcParseXXgcArguments(J9JavaVM *vm, char *optArg)
 		// vm->sharedCacheAPI->sharedCachePortable = TRUE;
 	} else {
 		printf ("gc parse set portable options to container?\n");
-		OMRPORT_ACCESS_FROM_J9PORT(vm->portLibrary);
-		BOOLEAN inContainer = omrsysinfo_is_running_in_container();
+		// OMRPORT_ACCESS_FROM_J9PORT(vm->portLibrary);
+		// BOOLEAN inContainer = omrsysinfo_is_running_in_container();
 		// if (TRUE == inContainer)
 		// 	vm->sharedCacheAPI->sharedCachePortable = TRUE;
 		// else
