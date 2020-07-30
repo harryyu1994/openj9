@@ -3007,6 +3007,36 @@ gcInitializeDefaults(J9JavaVM* vm)
 		loadInfo->fatalErrorStr = NULL;
 	}
 
+	IDATA argIndex1 = -1;
+    IDATA argIndex2 = -1;
+	argIndex1 = FIND_AND_CONSUME_ARG(EXACT_MATCH, VMOPT_XXPORTABLESHAREDCACHE, NULL);
+	argIndex2 = FIND_AND_CONSUME_ARG(EXACT_MATCH, VMOPT_XXNOPORTABLESHAREDCACHE, NULL);
+	bool portable = false;
+	if (vm->sharedCacheAPI == NULL)
+		printf(" vm shared cache api is null\n");
+	if (argIndex2 > argIndex1) {
+		printf ("mminit.cpp set portable options to false\n");
+		// vm->sharedCacheAPI->sharedCachePortable = FALSE;
+	} else if (argIndex1 > argIndex2) {
+		printf ("mminit.cpp set portable options to true\n");
+		// vm->sharedCacheAPI->sharedCachePortable = TRUE;
+	} else {
+		OMRPORT_ACCESS_FROM_J9PORT(vm->portLibrary);
+		BOOLEAN inContainer = omrsysinfo_is_running_in_container();
+		if (TRUE == inContainer)
+			printf ("mminit.cpp set portable options to true in container\n");
+		else
+			printf ("mminit.cpp set portable options to false in container\n")
+
+		// if (TRUE == inContainer)
+		// 	vm->sharedCacheAPI->sharedCachePortable = TRUE;
+		// else
+		// 	vm->sharedCacheAPI->sharedCachePortable = FALSE;
+	}
+
+
+
+
 	warnIfPageSizeNotSatisfied(vm,extensions);
 	j9mem_free_memory(memoryParameterTable);
 	return J9VMDLLMAIN_OK;

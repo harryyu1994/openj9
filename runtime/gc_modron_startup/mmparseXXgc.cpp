@@ -59,26 +59,6 @@ gcParseXXgcArguments(J9JavaVM *vm, char *optArg)
 
 	extensions = MM_GCExtensions::getExtensions(vm);
 
-	IDATA argIndex1 = -1;
-    IDATA argIndex2 = -1;
-	argIndex1 = FIND_AND_CONSUME_ARG(EXACT_MATCH, VMOPT_XXPORTABLESHAREDCACHE, NULL);
-	argIndex2 = FIND_AND_CONSUME_ARG(EXACT_MATCH, VMOPT_XXNOPORTABLESHAREDCACHE, NULL);
-	if (argIndex2 > argIndex1) {
-		printf ("gc parse set portable options to false\n");
-		// vm->sharedCacheAPI->sharedCachePortable = FALSE;
-	} else if (argIndex1 > argIndex2) {
-		printf ("gc parse set portable options to true");
-		// vm->sharedCacheAPI->sharedCachePortable = TRUE;
-	} else {
-		printf ("gc parse set portable options to container?\n");
-		// OMRPORT_ACCESS_FROM_J9PORT(vm->portLibrary);
-		// BOOLEAN inContainer = omrsysinfo_is_running_in_container();
-		// if (TRUE == inContainer)
-		// 	vm->sharedCacheAPI->sharedCachePortable = TRUE;
-		// else
-		// 	vm->sharedCacheAPI->sharedCachePortable = FALSE;
-	}
-
 	jint returnValue = JNI_OK;
 
 	while (scan_start < scan_limit) {
