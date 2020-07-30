@@ -1675,10 +1675,27 @@ IDATA VMInitStages(J9JavaVM *vm, IDATA stage, void* reserved) {
 			{
 				IDATA argIndex3, argIndex4, argIndex5, argIndex6, argIndex7, argIndex8;
 				IDATA argIndex9 = 0;
+				BOOLEAN sharedClassDisabled = FALSE;
+				IDATA argIndexXXPortableSharedCache, argIndexXXNoPortableSharedCache, argIndexXaot, argIndexXnoaot;
 
 				vm->sharedClassPreinitConfig = NULL;
 
 				argIndex = FIND_ARG_IN_VMARGS(OPTIONAL_LIST_MATCH, VMOPT_XSHARECLASSES, NULL);
+				if (argIndex >= 0) {
+					char optionsBuffer[2 * J9SH_MAXPATH];
+					char* optionsBufferPtr = (char*)optionsBuffer;
+
+					if (GET_OPTION_VALUES(argIndex, ':', ',', &optionsBufferPtr, 2 * J9SH_MAXPATH) == OPTION_OK) {
+						while (*optionsBufferPtr) {
+							if (try_scan(&optionsBufferPtr, OPT_NONE)) {
+								sharedClassDisabled = TRUE;
+								break;
+							}
+							optionsBufferPtr += strlen(optionsBufferPtr)+1;
+						}
+					}
+				}
+
 				argIndex2 = FIND_AND_CONSUME_ARG(EXACT_MEMORY_MATCH, VMOPT_XSCMX, NULL);
 				argIndex3 = FIND_AND_CONSUME_ARG(EXACT_MEMORY_MATCH, VMOPT_XSCMINAOT, NULL);
 				argIndex4 = FIND_AND_CONSUME_ARG(EXACT_MEMORY_MATCH, VMOPT_XSCMAXAOT, NULL);
@@ -1687,11 +1704,16 @@ IDATA VMInitStages(J9JavaVM *vm, IDATA stage, void* reserved) {
 				argIndex7 = FIND_AND_CONSUME_ARG(EXACT_MEMORY_MATCH, VMOPT_XSCMINJITDATA, NULL);
 				argIndex8 = FIND_AND_CONSUME_ARG(EXACT_MEMORY_MATCH, VMOPT_XSCMAXJITDATA, NULL);
 				argIndex9 = FIND_AND_CONSUME_ARG(EXACT_MEMORY_MATCH, VMOPT_XXSHARED_CACHE_HARD_LIMIT_EQUALS, NULL);
+				
+				argIndexXXPortableSharedCache = FIND_AND_CONSUME_ARG(EXACT_MATCH, VMOPT_XXPORTABLESHAREDCACHE, NULL);
+  				argIndexXXNoPortableSharedCache = FIND_AND_CONSUME_ARG(EXACT_MATCH, VMOPT_XXNOPORTABLESHAREDCACHE, NULL);
+  				argIndexXaot = FIND_AND_CONSUME_ARG(OPTIONAL_LIST_MATCH, VMOPT_XAOT, 0);
+  				argIndexXnoaot = FIND_AND_CONSUME_ARG(OPTIONAL_LIST_MATCH, VMOPT_XNOAOT, 0);
 
-				if ((!J9_SHARED_CACHE_DEFAULT_BOOT_SHARING(vm))
-					&& (argIndex < 0)
+				if (((!J9_SHARED_CACHE_DEFAULT_BOOT_SHARING(vm)) && (argIndex < 0))
+					|| (TRUE == sharedClassDisabled)
 				) {
-					if (argIndex2>=0) {
+					if (argIndex2 >= 0) {
 						/* If -Xscmx used without -Xshareclasses, don't bomb out with "unrecognised option" */
 						j9nls_printf(PORTLIB, J9NLS_INFO, J9NLS_VM_XSCMX_IGNORED);
 					} else
@@ -1766,7 +1788,22 @@ IDATA VMInitStages(J9JavaVM *vm, IDATA stage, void* reserved) {
 					}
 					piConfig->sharedClassReadWriteBytes = -1;					/* -1 == proportion of cache size */
 					vm->sharedClassPreinitConfig = piConfig;
-				}
+
+					if (argIndexXaot >= argIndexXnoaot) {
+						vm->extendedRuntimeFlags2 |= J9_EXTENDED_RUNTIME2_ENABLE_AOT;
+					}
+
+#if defined(J9VM_ARCH_X86)
+					if (argIndexXXPortableSharedCache > argIndexXXNoPortableSharedCache) {
+						vm->extendedRuntimeFlags2 |= J9_EXTENDED_RUNTIME2_ENABLE_PORTABLE_SHARED_CACHE;
+					} else if (argIndexXXPortableSharedCache == argIndexXXNoPortableSharedCache) {
+						OMRPORT_ACCESS_FROM_J9PORT(vm->portLibrary);
+						BOOLEAN inContainer = omrsysinfo_is_running_in_container();
+						if (TRUE == inContainer) {
+							vm->extendedRuntimeFlags2 |= J9_EXTENDED_RUNTIME2_ENABLE_PORTABLE_SHARED_CACHE;
+						}
+					}
+#endif /* defined(J9VM_ARCH_X86) */
 			}
 #endif
 
@@ -2561,8 +2598,6 @@ static UDATA checkArgsConsumed(J9JavaVM * vm, J9PortLibrary* portLibrary, J9VMIn
 		findArgInVMArgs( PORTLIB, j9vm_args, EXACT_MATCH, VMOPT_XXDISABLESHAREANONYMOUSCLASSES, NULL, TRUE);
 		findArgInVMArgs( PORTLIB, j9vm_args, EXACT_MATCH, VMOPT_XXENABLESHAREUNSAFECLASSES, NULL, TRUE);
 		findArgInVMArgs( PORTLIB, j9vm_args, EXACT_MATCH, VMOPT_XXDISABLESHAREUNSAFECLASSES, NULL, TRUE);
-		findArgInVMArgs( PORTLIB, j9vm_args, EXACT_MATCH, VMOPT_XXPORTABLESHAREDCACHE, NULL, TRUE);
-		findArgInVMArgs( PORTLIB, j9vm_args, EXACT_MATCH, VMOPT_XXNOPORTABLESHAREDCACHE, NULL, TRUE);
 	}
 
 	for (i=0; i<j9vm_args->nOptions; i++) {
