@@ -50,7 +50,6 @@
 jint
 gcParseXXgcArguments(J9JavaVM *vm, char *optArg)
 {
-	printf("in gcParseXXgcArguments\n");
 	char *scan_start = optArg;
 	char *scan_limit = optArg + strlen(optArg);
 	char *error_scan;

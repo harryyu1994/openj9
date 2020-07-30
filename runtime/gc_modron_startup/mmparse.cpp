@@ -1269,9 +1269,6 @@ gcParseXXArguments(J9JavaVM *vm)
 				extensions->shouldForceToLowMemoryHeapCeilingShiftIfPossible = false;
 			}
 		}
-		if (vm->sharedCacheAPI == NULL) {
-			printf(" vm shared cache api is null\n");
-		}
 	}
 	return 1;
 }
