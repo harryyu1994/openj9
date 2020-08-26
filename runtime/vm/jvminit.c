@@ -1676,7 +1676,7 @@ IDATA VMInitStages(J9JavaVM *vm, IDATA stage, void* reserved) {
 				IDATA argIndex3, argIndex4, argIndex5, argIndex6, argIndex7, argIndex8;
 				IDATA argIndex9 = 0;
 				BOOLEAN sharedClassDisabled = FALSE;
-				IDATA argIndexXXPortableSharedCache, argIndexXXNoPortableSharedCache, argIndexXaot, argIndexXnoaot;
+				// IDATA argIndexXXPortableSharedCache, argIndexXXNoPortableSharedCache, argIndexXaot, argIndexXnoaot;
 
 				vm->sharedClassPreinitConfig = NULL;
 
@@ -1705,10 +1705,10 @@ IDATA VMInitStages(J9JavaVM *vm, IDATA stage, void* reserved) {
 				argIndex8 = FIND_AND_CONSUME_ARG(EXACT_MEMORY_MATCH, VMOPT_XSCMAXJITDATA, NULL);
 				argIndex9 = FIND_AND_CONSUME_ARG(EXACT_MEMORY_MATCH, VMOPT_XXSHARED_CACHE_HARD_LIMIT_EQUALS, NULL);
 				
-				argIndexXXPortableSharedCache = FIND_AND_CONSUME_ARG(EXACT_MATCH, VMOPT_XXPORTABLESHAREDCACHE, NULL);
-  				argIndexXXNoPortableSharedCache = FIND_AND_CONSUME_ARG(EXACT_MATCH, VMOPT_XXNOPORTABLESHAREDCACHE, NULL);
-  				argIndexXaot = FIND_AND_CONSUME_ARG(OPTIONAL_LIST_MATCH, VMOPT_XAOT, 0);
-  				argIndexXnoaot = FIND_AND_CONSUME_ARG(OPTIONAL_LIST_MATCH, VMOPT_XNOAOT, 0);
+				// argIndexXXPortableSharedCache = FIND_AND_CONSUME_ARG(EXACT_MATCH, VMOPT_XXPORTABLESHAREDCACHE, NULL);
+  		// 		argIndexXXNoPortableSharedCache = FIND_AND_CONSUME_ARG(EXACT_MATCH, VMOPT_XXNOPORTABLESHAREDCACHE, NULL);
+  		// 		argIndexXaot = FIND_AND_CONSUME_ARG(OPTIONAL_LIST_MATCH, VMOPT_XAOT, 0);
+  		// 		argIndexXnoaot = FIND_AND_CONSUME_ARG(OPTIONAL_LIST_MATCH, VMOPT_XNOAOT, 0);
 
 				if (((!J9_SHARED_CACHE_DEFAULT_BOOT_SHARING(vm)) && (argIndex < 0))
 					|| (TRUE == sharedClassDisabled)
@@ -1789,20 +1789,20 @@ IDATA VMInitStages(J9JavaVM *vm, IDATA stage, void* reserved) {
 					piConfig->sharedClassReadWriteBytes = -1;					/* -1 == proportion of cache size */
 					vm->sharedClassPreinitConfig = piConfig;
 
-					if (argIndexXaot >= argIndexXnoaot) {
-						vm->extendedRuntimeFlags2 |= J9_EXTENDED_RUNTIME2_ENABLE_AOT;
-					}
+					// if (argIndexXaot >= argIndexXnoaot) {
+					// 	vm->extendedRuntimeFlags2 |= J9_EXTENDED_RUNTIME2_ENABLE_AOT;
+					// }
 
 #if defined(J9VM_ARCH_X86)
-					if (argIndexXXPortableSharedCache > argIndexXXNoPortableSharedCache) {
-						vm->extendedRuntimeFlags2 |= J9_EXTENDED_RUNTIME2_ENABLE_PORTABLE_SHARED_CACHE;
-					} else if (argIndexXXPortableSharedCache == argIndexXXNoPortableSharedCache) {
-						OMRPORT_ACCESS_FROM_J9PORT(vm->portLibrary);
-						BOOLEAN inContainer = omrsysinfo_is_running_in_container();
-						if (TRUE == inContainer) {
-							vm->extendedRuntimeFlags2 |= J9_EXTENDED_RUNTIME2_ENABLE_PORTABLE_SHARED_CACHE;
-						}
-					}
+					// if (argIndexXXPortableSharedCache > argIndexXXNoPortableSharedCache) {
+					// 	vm->extendedRuntimeFlags2 |= J9_EXTENDED_RUNTIME2_ENABLE_PORTABLE_SHARED_CACHE;
+					// } else if (argIndexXXPortableSharedCache == argIndexXXNoPortableSharedCache) {
+					// 	OMRPORT_ACCESS_FROM_J9PORT(vm->portLibrary);
+					// 	BOOLEAN inContainer = omrsysinfo_is_running_in_container();
+					// 	if (TRUE == inContainer) {
+					// 		vm->extendedRuntimeFlags2 |= J9_EXTENDED_RUNTIME2_ENABLE_PORTABLE_SHARED_CACHE;
+					// 	}
+					// }
 #endif /* defined(J9VM_ARCH_X86) */
 			}
 #endif
