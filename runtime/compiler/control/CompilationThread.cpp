@@ -8516,9 +8516,22 @@ TR::CompilationInfoPerThreadBase::wrappedCompile(J9PortLibrary *portLib, void * 
          else
 #endif /* defined(J9VM_OPT_JITSERVER) */
             {
-            if (vm->needRelocatableTarget() && target.cpu.isX86())
+            static int aotCount = 0;
+            static int jitCount = 0;
+            if (vm->needRelocatableTarget() && (target.cpu.isX86() || target.cpu.isZ()))
                {
                target = TR::Compiler->relocatableTarget;
+               if (aotCount < 20) {
+                  printf ("in relocatable, target processor is %d\n", target.cpu.getProcessorDescription().processor);
+                  aotCount += 1;
+                  }
+               }
+            else
+               {
+               if (jitCount < 20) {
+                  printf ("in non-relocatable, target processor is %d\n", target.cpu.getProcessorDescription().processor);
+                  jitCount += 1;
+                  }
                }
             }
          compiler = new (p->trMemory(), heapAlloc) TR::Compilation(
