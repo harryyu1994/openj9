@@ -29,8 +29,20 @@
 bool
 J9::Power::CPU::isCompatible(const OMRProcessorDesc& processorDescription)
    {
-   OMRProcessorArchitecture targetProcessor = self()->getProcessorDescription().processor;
+   OMRProcessorDesc &targetProcessorDescription = self()->getProcessorDescription();
+   OMRProcessorArchitecture targetProcessor = targetProcessorDescription.processor;
    OMRProcessorArchitecture processor = processorDescription.processor;
+
+   OMRPORT_ACCESS_FROM_OMRPORT(TR::Compiler->omrPortLib);
+   uint32_t exploitedFeatures [] = {OMR_FEATURE_PPC_HAS_ALTIVEC, OMR_FEATURE_PPC_HAS_DFP, OMR_FEATURE_PPC_HAS_VSX, OMR_FEATURE_PPC_HTM};
+   for (size_t i = 0; i < sizeof(exploitedFeatures)/sizeof(uint32_t); i++)
+      {
+      if ((TRUE == omrsysinfo_processor_has_feature(&processorDescription, exploitedFeatures[i])) && (FALSE == omrsysinfo_processor_has_feature(&targetProcessorDescription, exploitedFeatures[i])))
+         {
+         return false;
+         }
+      }
+
    // Backwards compatibility only applies to p4,p5,p6,p7 and onwards
    // Looks for equality otherwise
    if ((processor == OMR_PROCESSOR_PPC_GP
