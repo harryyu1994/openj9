@@ -26,6 +26,26 @@
 #include "j9.h"
 #include "j9port.h"
 
+TR::CPU
+J9::Power::CPU::detectRelocatable(OMRPortLibrary * const omrPortLib)
+   {
+   if (omrPortLib == NULL)
+      return TR::CPU();
+
+   OMRPORT_ACCESS_FROM_OMRPORT(omrPortLib);
+
+   TR::CPU host = TR::CPU::detect(omrPortLib);
+   OMRProcessorDesc portableProcessorDescription = host.getProcessorDescription();
+   
+   if (portableProcessorDescription.processor > OMR_PROCESSOR_PPC_P8)
+      {
+      portableProcessorDescription.processor = OMR_PROCESSOR_PPC_P8;
+      portableProcessorDescription.physicalProcessor = OMR_PROCESSOR_PPC_P8;
+      }
+
+   return TR::CPU(portableProcessorDescription);
+   }
+
 bool
 J9::Power::CPU::isCompatible(const OMRProcessorDesc& processorDescription)
    {
