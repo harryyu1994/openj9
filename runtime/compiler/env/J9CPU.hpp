@@ -45,12 +45,17 @@ protected:
    CPU() : OMR::CPUConnector() {}
    CPU(const OMRProcessorDesc& processorDescription) : OMR::CPUConnector(processorDescription) {}
 
+   static OMRProcessorDesc _featureMasks;
+   static bool _shouldUseFeatureMasks; 
+   static void applyFeatureMasks(OMRProcessorDesc& processorDescription, const uint32_t* enabledFeatures, size_t size); 
+
 public:
 
    const char *getProcessorVendorId() { TR_ASSERT(false, "Vendor ID not defined for this platform!"); return NULL; }
    uint32_t getProcessorSignature() { TR_ASSERT(false, "Processor Signature not defined for this platform!"); return 0; }
 
    OMRProcessorDesc getProcessorDescription();
+   bool supportsFeature(uint32_t feature);
    };
 }
 

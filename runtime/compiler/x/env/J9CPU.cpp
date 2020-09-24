@@ -44,10 +44,10 @@ J9::X86::CPU::detectRelocatable(OMRPortLibrary * const omrPortLib)
       return TR::CPU();
 
    // Sandybridge Architecture is selected to be our default portable processor description
-   uint32_t enabledFeatures [] = {OMR_FEATURE_X86_FPU, OMR_FEATURE_X86_CX8, OMR_FEATURE_X86_CMOV,
-                                  OMR_FEATURE_X86_MMX, OMR_FEATURE_X86_SSE, OMR_FEATURE_X86_SSE2,
-                                  OMR_FEATURE_X86_SSSE3, OMR_FEATURE_X86_SSE4_1, OMR_FEATURE_X86_POPCNT,
-                                  OMR_FEATURE_X86_AESNI, OMR_FEATURE_X86_AVX};
+   const uint32_t enabledFeatures [] = {OMR_FEATURE_X86_FPU, OMR_FEATURE_X86_CX8, OMR_FEATURE_X86_CMOV,
+                                        OMR_FEATURE_X86_MMX, OMR_FEATURE_X86_SSE, OMR_FEATURE_X86_SSE2,
+                                        OMR_FEATURE_X86_SSSE3, OMR_FEATURE_X86_SSE4_1, OMR_FEATURE_X86_POPCNT,
+                                        OMR_FEATURE_X86_AESNI, OMR_FEATURE_X86_AVX};
 
    OMRPORT_ACCESS_FROM_OMRPORT(omrPortLib);
    OMRProcessorDesc customProcessorDescription;
@@ -113,6 +113,44 @@ J9::X86::CPU::isCompatible(const OMRProcessorDesc& processorDescription)
          return false;
       }
    return true;
+   }
+
+bool
+J9::X86::CPU::is(OMRProcessorArchitecture p)
+   {
+   static bool disableCPUDetectionTest = feGetEnv("TR_DisableCPUDetectionTest");
+   if (!disableCPUDetectionTest)
+      TR_ASSERT_FATAL(self()->is_test(p), "old api and new api did not match, processor %d", p);
+
+   return _processorDescription.processor == p;
+   }
+
+bool
+J9::X86::CPU::supportsFeature(uint32_t feature)
+   {
+   OMRPORT_ACCESS_FROM_OMRPORT(TR::Compiler->omrPortLib);
+
+   static bool disableCPUDetectionTest = feGetEnv("TR_DisableCPUDetectionTest");
+   if (!disableCPUDetectionTest)
+      TR_ASSERT_FATAL(self()->supports_feature_test(feature), "old api and new api did not match, feature %d", feature);
+   
+   if (_shouldUseFeatureMasks)
+      TR_ASSERT_FATAL(TRUE == omrsysinfo_processor_has_feature(&_featureMasks, feature), "new feature usage detected, please enable feature %d in TR::CPU::applyUserOptions()\n", feature);
+   
+   return TRUE == omrsysinfo_processor_has_feature(&_processorDescription, feature);
+   }
+
+void
+J9::X86::CPU::applyUserOptions()
+   {
+   // Only enable the features that compiler currently uses
+   const uint32_t enabledFeatures [] = {OMR_FEATURE_X86_FPU, OMR_FEATURE_X86_CX8, OMR_FEATURE_X86_CMOV,
+                                        OMR_FEATURE_X86_MMX, OMR_FEATURE_X86_SSE, OMR_FEATURE_X86_SSE2,
+                                        OMR_FEATURE_X86_SSSE3, OMR_FEATURE_X86_SSE4_1, OMR_FEATURE_X86_POPCNT,
+                                        OMR_FEATURE_X86_AESNI, OMR_FEATURE_X86_OSXSAVE, OMR_FEATURE_X86_AVX,
+                                        OMR_FEATURE_X86_FMA, OMR_FEATURE_X86_HLE, OMR_FEATURE_X86_RTM};
+
+   TR::CPU::applyFeatureMasks(_processorDescription, enabledFeatures, sizeof(enabledFeatures)/sizeof(uint32_t));
    }
 
 uint32_t

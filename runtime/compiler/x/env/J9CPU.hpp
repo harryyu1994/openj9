@@ -57,6 +57,10 @@ public:
     * @return TR::CPU
     */
    static TR::CPU detectRelocatable(OMRPortLibrary * const omrPortLib);
+   void applyUserOptions();
+
+   bool is(OMRProcessorArchitecture p);
+   bool supportsFeature(uint32_t feature);
 
    TR_X86CPUIDBuffer *queryX86TargetCPUID();
    const char * getProcessorVendorId();
@@ -66,6 +70,7 @@ public:
    bool hasPopulationCountInstruction();
 
    bool isCompatible(const OMRProcessorDesc& processorDescription);
+
    uint32_t getX86ProcessorFeatureFlags();
    uint32_t getX86ProcessorFeatureFlags2();
    uint32_t getX86ProcessorFeatureFlags8();

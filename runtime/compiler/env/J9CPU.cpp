@@ -28,8 +28,9 @@
 #include "env/CompilerEnv.hpp"
 #include "env/CPU.hpp"
 #include "env/VMJ9.h"
-#include "j9.h"
-#include "j9port.h"
+
+OMRProcessorDesc J9::CPU::_featureMasks = {OMR_PROCESSOR_UNDEFINED, OMR_PROCESSOR_UNDEFINED, {0, 0, 0, 0, 0}};
+bool J9::CPU::_shouldUseFeatureMasks = false;
 
 OMRProcessorDesc
 J9::CPU::getProcessorDescription()
@@ -42,4 +43,30 @@ J9::CPU::getProcessorDescription()
       }
 #endif /* defined(J9VM_OPT_JITSERVER) */
    return _processorDescription;
+   }
+
+void
+J9::CPU::applyFeatureMasks(OMRProcessorDesc& processorDescription, const uint32_t* enabledFeatures, size_t size)
+   {
+   OMRPORT_ACCESS_FROM_OMRPORT(TR::Compiler->omrPortLib);
+   memset(_featureMasks.features, 0, OMRPORT_SYSINFO_FEATURES_SIZE*sizeof(uint32_t));
+   for (size_t i = 0; i < size; i++)
+      {
+      omrsysinfo_processor_set_feature(&_featureMasks, enabledFeatures[i], TRUE);
+      }
+   _shouldUseFeatureMasks = true;
+   
+   for (size_t i = 0; i < OMRPORT_SYSINFO_FEATURES_SIZE; i++)
+      {
+      processorDescription.features[i] &= _featureMasks.features[i];
+      }
+   }
+
+bool
+J9::CPU::supportsFeature(uint32_t feature)
+   {
+   OMRPORT_ACCESS_FROM_OMRPORT(TR::Compiler->omrPortLib);
+   if (_shouldUseFeatureMasks)
+      TR_ASSERT_FATAL(TRUE == omrsysinfo_processor_has_feature(&_featureMasks, feature), "new feature usage detected, please enable feature %d in TR::CPU::applyUserOptions()\n", feature);
+   return TRUE == omrsysinfo_processor_has_feature(&_processorDescription, feature);
    }

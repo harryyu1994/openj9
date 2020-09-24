@@ -103,5 +103,11 @@ J9::Power::CPU::applyUserOptions()
       _processorDescription.processor = OMR_PROCESSOR_PPC_PWR440;
    else if (debug("750FX"))
       _processorDescription.processor = OMR_PROCESSOR_PPC_7XX;
+
+   // Only enable the features that compiler currently uses
+   const uint32_t enabledFeatures [] = {OMR_FEATURE_PPC_HAS_ALTIVEC, OMR_FEATURE_PPC_HAS_DFP,
+                                        OMR_FEATURE_PPC_HTM, OMR_FEATURE_PPC_HAS_VSX};
+   
+   TR::CPU::applyFeatureMasks(_processorDescription, enabledFeatures, sizeof(enabledFeatures)/sizeof(uint32_t));
    }
 
