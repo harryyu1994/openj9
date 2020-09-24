@@ -8516,14 +8516,24 @@ TR::CompilationInfoPerThreadBase::wrappedCompile(J9PortLibrary *portLib, void * 
          else
 #endif /* defined(J9VM_OPT_JITSERVER) */
             {
+            static int count1 = 0;
+            static int count2 = 0;
             if (vm->needRelocatableTarget())
                {
-               printf ("using relocatable target %d\n", TR::Compiler->relocatableTarget.cpu.getProcessorDescription().processor);
+               if (count1 < 20)
+                  {
+                  count1 += 1;
+                  printf ("using relocatable target %d\n", TR::Compiler->relocatableTarget.cpu.getProcessorDescription().processor);
+                  }
                target = TR::Compiler->relocatableTarget;
                }
             else
                {
-               printf ("using non-relocatable target %d\n", target.cpu.getProcessorDescription().processor);
+               if (count2 < 20)
+                  {
+                  count2 += 1;
+                  printf ("using non-relocatable target %d\n", target.cpu.getProcessorDescription().processor);
+                  }
                }
             }
          compiler = new (p->trMemory(), heapAlloc) TR::Compilation(
