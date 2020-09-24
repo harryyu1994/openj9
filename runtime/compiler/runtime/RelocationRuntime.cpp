@@ -1172,11 +1172,14 @@ TR_SharedCacheRelocationRuntime::createAOTHeader(TR_FrontEnd *fe)
 
       if (J9_ARE_ANY_BITS_SET(javaVM()->extendedRuntimeFlags2, J9_EXTENDED_RUNTIME2_ENABLE_PORTABLE_SHARED_CACHE))
          {
+         printf("create AOT header: enable portable shared cache, detectRelocatable\n");
          TR::Compiler->relocatableTarget.cpu = TR::CPU::detectRelocatable(TR::Compiler->omrPortLib);
+         printf("relocatable cpu is %d and assign to AOTHeader\n", TR::Compiler->relocatableTarget.cpu.getProcessorDescription().processor);
          aotHeader->processorDescription = TR::Compiler->relocatableTarget.cpu.getProcessorDescription();
          }
       else
          {
+         printf("create AOT header: non-relocatable cpu is %d and assign to AOTHeader\n", TR::Compiler->target.cpu.getProcessorDescription().processor);
          aotHeader->processorDescription = TR::Compiler->target.cpu.getProcessorDescription();
          }
 
