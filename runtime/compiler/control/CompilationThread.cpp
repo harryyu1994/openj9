@@ -8516,9 +8516,14 @@ TR::CompilationInfoPerThreadBase::wrappedCompile(J9PortLibrary *portLib, void * 
          else
 #endif /* defined(J9VM_OPT_JITSERVER) */
             {
-            if (vm->needRelocatableTarget() && target.cpu.isX86())
+            if (vm->needRelocatableTarget())
                {
+               printf ("using relocatable target %d\n", TR::Compiler->relocatableTarget.cpu.getProcessorDescription().processor);
                target = TR::Compiler->relocatableTarget;
+               }
+            else
+               {
+               printf ("using non-relocatable target %d\n", target.cpu.getProcessorDescription().processor);
                }
             }
          compiler = new (p->trMemory(), heapAlloc) TR::Compilation(
