@@ -48,6 +48,8 @@ J9::CPU::getProcessorDescription()
 void
 J9::CPU::applyFeatureMasks(OMRProcessorDesc& processorDescription, const uint32_t* enabledFeatures, size_t size)
    {
+   printf("apply feature masks\n");
+
    OMRPORT_ACCESS_FROM_OMRPORT(TR::Compiler->omrPortLib);
    memset(_featureMasks.features, 0, OMRPORT_SYSINFO_FEATURES_SIZE*sizeof(uint32_t));
    for (size_t i = 0; i < size; i++)
@@ -56,6 +58,32 @@ J9::CPU::applyFeatureMasks(OMRProcessorDesc& processorDescription, const uint32_
       }
    _shouldUseFeatureMasks = true;
    
+   for (int k = 0; k < 5; k++)
+      {
+      printf ("feature mask %d   0b", k);
+      for (int i = 31; i >= 0; i--)
+         {
+         if ((1 << i) & _featureMasks.features[k])
+            printf ("1");
+         else
+            printf ("0");
+         }
+      printf ("\n");
+      }
+
+   for (int k = 0; k < 5; k++)
+      {
+      printf ("processorDescription %d   0b", k);
+      for (int i = 31; i >= 0; i--)
+         {
+         if ((1 << i) & processorDescription.features[k])
+            printf ("1");
+         else
+            printf ("0");
+         }
+      printf ("\n");
+      }
+
    for (size_t i = 0; i < OMRPORT_SYSINFO_FEATURES_SIZE; i++)
       {
       processorDescription.features[i] &= _featureMasks.features[i];
