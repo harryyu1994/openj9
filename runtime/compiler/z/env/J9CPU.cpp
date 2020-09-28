@@ -146,7 +146,7 @@ J9::Z::CPU::applyUserOptions()
 
    // Only enable the features that compiler currently uses
    const uint32_t enabledFeatures [] = {OMR_FEATURE_S390_DFP, OMR_FEATURE_S390_TE, OMR_FEATURE_S390_FPE,
-                                        OMR_FEATURE_S390_RI, OMR_FEATURE_S390_VECTOR_FACILITY, OMR_FEATURE_S390_HIGH_WORD
+                                        OMR_FEATURE_S390_RI, OMR_FEATURE_S390_VECTOR_FACILITY, OMR_FEATURE_S390_HIGH_WORD,
                                         OMR_FEATURE_S390_MISCELLANEOUS_INSTRUCTION_EXTENSION_2,
                                         OMR_FEATURE_S390_GUARDED_STORAGE, OMR_FEATURE_S390_VECTOR_PACKED_DECIMAL,
                                         OMR_FEATURE_S390_VECTOR_FACILITY_ENHANCEMENT_1,

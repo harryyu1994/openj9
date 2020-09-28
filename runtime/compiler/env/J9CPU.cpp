@@ -88,6 +88,19 @@ J9::CPU::applyFeatureMasks(OMRProcessorDesc& processorDescription, const uint32_
       {
       processorDescription.features[i] &= _featureMasks.features[i];
       }
+
+   for (int k = 0; k < 5; k++)
+      {
+      printf ("masked processorDescription %d   0b", k);
+      for (int i = 31; i >= 0; i--)
+         {
+         if ((1 << i) & processorDescription.features[k])
+            printf ("1");
+         else
+            printf ("0");
+         }
+      printf ("\n");
+      }
    }
 
 bool
