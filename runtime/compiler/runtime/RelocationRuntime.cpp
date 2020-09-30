@@ -1172,7 +1172,28 @@ TR_SharedCacheRelocationRuntime::createAOTHeader(TR_FrontEnd *fe)
 
       if (J9_ARE_ANY_BITS_SET(javaVM()->extendedRuntimeFlags2, J9_EXTENDED_RUNTIME2_ENABLE_PORTABLE_SHARED_CACHE))
          {
+         OMRPORT_ACCESS_FROM_OMRPORT(TR::Compiler->omrPortLib);
+
          TR::Compiler->relocatableTarget.cpu = TR::CPU::detectRelocatable(TR::Compiler->omrPortLib);
+         OMRProcessorDesc processorDescription = TR::Compiler->relocatableTarget.cpu.getProcessorDescription();
+         for (int k = 0; k < 5; k++)
+            {
+            printf ("relocatable processorDescription %d   0b", k);
+            for (int i = 31; i >= 0; i--)
+               {
+               if ((1 << i) & processorDescription.features[k])
+                  printf ("1");
+               else
+                  printf ("0");
+               }
+
+            for (int i = 31; i >= 0; i--)
+               {
+               if ((1 << i) & processorDescription.features[k])
+                  printf ("  %s  ", omrsysinfo_get_processor_feature_name(k*32 + i));
+               }
+            printf ("\n");
+            }
          aotHeader->processorDescription = TR::Compiler->relocatableTarget.cpu.getProcessorDescription();
          }
       else

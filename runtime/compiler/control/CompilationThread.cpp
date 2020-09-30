@@ -8520,9 +8520,63 @@ TR::CompilationInfoPerThreadBase::wrappedCompile(J9PortLibrary *portLib, void * 
          else
 #endif /* defined(J9VM_OPT_JITSERVER) */
             {
+            static int count1 = 0;
+            static int count2 = 0;
+            OMRPORT_ACCESS_FROM_OMRPORT(TR::Compiler->omrPortLib);
             if (vm->needRelocatableTarget())
                {
                target = TR::Compiler->relocatableTarget;
+               if (count1 < 2)
+                  {
+                  count1 += 1;
+                  printf ("using relocatable target %d\n", target.cpu.getProcessorDescription().processor);
+                  OMRProcessorDesc processorDescription = target.cpu.getProcessorDescription();
+                  for (int k = 0; k < 5; k++)
+                     {
+                     printf ("relocatable processorDescription %d   0b", k);
+                     for (int i = 31; i >= 0; i--)
+                        {
+                        if ((1 << i) & processorDescription.features[k])
+                           printf ("1");
+                        else
+                           printf ("0");
+                        }
+
+                     for (int i = 31; i >= 0; i--)
+                        {
+                        if ((1 << i) & processorDescription.features[k])
+                           printf ("  %s  ", omrsysinfo_get_processor_feature_name(k*32 + i));
+                        }
+                     printf ("\n");
+                     }
+                  }
+               }
+            else
+               {
+               if (count2 < 2)
+                  {
+                  count2 += 1;
+                  printf ("using non-relocatable target %d\n", target.cpu.getProcessorDescription().processor);
+                  OMRProcessorDesc processorDescription = target.cpu.getProcessorDescription();
+                  for (int k = 0; k < 5; k++)
+                     {
+                     printf ("non-relocatable processorDescription %d   0b", k);
+                     for (int i = 31; i >= 0; i--)
+                        {
+                        if ((1 << i) & processorDescription.features[k])
+                           printf ("1");
+                        else
+                           printf ("0");
+                        }
+
+                     for (int i = 31; i >= 0; i--)
+                        {
+                        if ((1 << i) & processorDescription.features[k])
+                           printf ("  %s  ", omrsysinfo_get_processor_feature_name(k*32 + i));
+                        }
+                     printf ("\n");
+                     }
+                  }
                }
             }
          compiler = new (p->trMemory(), heapAlloc) TR::Compilation(

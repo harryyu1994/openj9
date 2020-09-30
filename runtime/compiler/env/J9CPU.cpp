@@ -74,8 +74,92 @@ J9::CPU::detect(OMRPortLibrary * const omrPortLib)
    OMRProcessorDesc processorDescription;
    omrsysinfo_get_processor_description(&processorDescription);
 
+   for (int k = 0; k < 5; k++)
+      {
+      printf ("J9::CPU::detect!! before customize: processorDescription %d   0b", k);
+      for (int i = 31; i >= 0; i--)
+         {
+         if ((1 << i) & processorDescription.features[k])
+            printf ("1");
+         else
+            printf ("0");
+         }
+
+      for (int i = 31; i >= 0; i--)
+         {
+         if ((1 << i) & processorDescription.features[k])
+            printf ("  %s  ", omrsysinfo_get_processor_feature_name(k*32 + i));
+         }
+      printf ("\n");
+      }
+
+   PORT_ACCESS_FROM_PORT(TR::Compiler->portLib);
+   J9ProcessorDesc processorDescriptionOld;
+   j9sysinfo_get_processor_description(&processorDescriptionOld);
+
+   for (int k = 0; k < 5; k++)
+      {
+      printf ("J9::CPU::detect!! before customize old version: processorDescriptionOld %d   0b", k);
+      for (int i = 31; i >= 0; i--)
+         {
+         if ((1 << i) & processorDescriptionOld.features[k])
+            printf ("1");
+         else
+            printf ("0");
+         }
+
+      for (int i = 31; i >= 0; i--)
+         {
+         if ((1 << i) & processorDescriptionOld.features[k])
+            printf ("  %s  ", omrsysinfo_get_processor_feature_name(k*32 + i));
+         }
+      printf ("\n");
+      }
+
    TR::CPU::enableFeatureMasks();
-   return TR::CPU::customize(processorDescription);
+   TR::CPU cpu = TR::CPU::customize(processorDescription);
+
+   for (int k = 0; k < 5; k++)
+      {
+      printf ("J9::CPU::detect!! after customize: feature Masks %d   0b", k);
+      for (int i = 31; i >= 0; i--)
+         {
+         if ((1 << i) & _featureMasks.features[k])
+            printf ("1");
+         else
+            printf ("0");
+         }
+
+      for (int i = 31; i >= 0; i--)
+         {
+         if ((1 << i) & _featureMasks.features[k])
+            printf ("  %s  ", omrsysinfo_get_processor_feature_name(k*32 + i));
+         }
+
+      printf ("\n");
+      }
+
+   OMRProcessorDesc processorDescription2 = cpu.getProcessorDescription();
+   for (int k = 0; k < 5; k++)
+      {
+      printf ("J9::CPU::detect!! After customize: processorDescription %d   0b", k);
+      for (int i = 31; i >= 0; i--)
+         {
+         if ((1 << i) & processorDescription2.features[k])
+            printf ("1");
+         else
+            printf ("0");
+         }
+
+      for (int i = 31; i >= 0; i--)
+         {
+         if ((1 << i) & processorDescription2.features[k])
+            printf ("  %s  ", omrsysinfo_get_processor_feature_name(k*32 + i));
+         }
+
+      printf ("\n");
+      }
+   return cpu;
    }
 
 bool
