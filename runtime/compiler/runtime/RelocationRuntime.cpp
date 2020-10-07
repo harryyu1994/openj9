@@ -1176,6 +1176,8 @@ TR_SharedCacheRelocationRuntime::createAOTHeader(TR_FrontEnd *fe)
 
          TR::Compiler->relocatableTarget.cpu = TR::CPU::detectRelocatable(TR::Compiler->omrPortLib);
          OMRProcessorDesc processorDescription = TR::Compiler->relocatableTarget.cpu.getProcessorDescription();
+
+         printf("relocatable processor type %d \n", processorDescription.processor);
          for (int k = 0; k < 5; k++)
             {
             printf ("relocatable processorDescription %d   0b", k);

@@ -124,7 +124,7 @@ J9::CPU::detect(OMRPortLibrary * const omrPortLib)
       printf ("J9::CPU::detect!! after customize: feature Masks %d   0b", k);
       for (int i = 31; i >= 0; i--)
          {
-         if ((1 << i) & _featureMasks.features[k])
+         if ((1 << i) & _supportedFeatureMasks.features[k])
             printf ("1");
          else
             printf ("0");
@@ -132,7 +132,7 @@ J9::CPU::detect(OMRPortLibrary * const omrPortLib)
 
       for (int i = 31; i >= 0; i--)
          {
-         if ((1 << i) & _featureMasks.features[k])
+         if ((1 << i) & _supportedFeatureMasks.features[k])
             printf ("  %s  ", omrsysinfo_get_processor_feature_name(k*32 + i));
          }
 
