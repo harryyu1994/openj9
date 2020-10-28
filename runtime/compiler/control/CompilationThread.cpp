@@ -617,18 +617,19 @@ bool TR::CompilationInfo::shouldDowngradeCompReq(TR_MethodToBeCompiled *entry)
       const J9ROMMethod * romMethod = methodDetails.getRomMethod();
       TR_J9VMBase *fe = TR_J9VMBase::get(_jitConfig, NULL);
 
-      // Don't downgrade if method is JSR292. See CMVC 200145
-      if (_J9ROMMETHOD_J9MODIFIER_IS_SET(romMethod, J9AccMethodHasMethodHandleInvokes))
-         {
-         doDowngrade = false;
-         }
-      // similarly don't downgrade a thunk archetype - inlining in these is also vital
-      else if (fe->isThunkArchetype(method))
-         {
-         doDowngrade = false;
-         }
+      // // Don't downgrade if method is JSR292. See CMVC 200145
+      // if (_J9ROMMETHOD_J9MODIFIER_IS_SET(romMethod, J9AccMethodHasMethodHandleInvokes))
+      //    {
+      //    doDowngrade = false;
+      //    }
+      // // similarly don't downgrade a thunk archetype - inlining in these is also vital
+      // else if (fe->isThunkArchetype(method))
+      //    {
+      //    doDowngrade = false;
+      //    }
               // perform JNI at cold
-      else if (entry->isJNINative() ||
+      // else if (entry->isJNINative() ||
+      if (entry->isJNINative() ||
               // downgrade AOT loads that failed
               (entry->_methodIsInSharedCache == TR_yes && entry->_doNotUseAotCodeFromSharedCache && entry->_compilationAttemptsLeft < MAX_COMPILE_ATTEMPTS))
          {
