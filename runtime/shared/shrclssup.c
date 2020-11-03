@@ -39,7 +39,7 @@ IDATA J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved)
 	PORT_ACCESS_FROM_JAVAVM(vm);
 
 	if (vm->sharedCacheAPI == NULL) {
-
+		printf ("what stage is this? %d\n", stage);
 		IDATA index = FIND_ARG_IN_VMARGS( OPTIONAL_LIST_MATCH, OPT_XSHARECLASSES, NULL);
 
 		U_64 runtimeFlags = getDefaultRuntimeFlags();
