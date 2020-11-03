@@ -283,6 +283,7 @@ IDATA J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved)
 	{
 		printf ("in LOAD_BY_DEFAULT stage\n");
 		printf ("call a shr api! %d\n", j9shr_isPlatformDefaultPersistent(vm));
+		break;
 	}
 
 	/* This code detects "none" as part of Xshareclasses and unloads the DLL if it is found. Must therefore be in this stage or earlier */
