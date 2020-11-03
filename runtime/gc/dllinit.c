@@ -64,6 +64,7 @@ J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved)
 			/* Note: this must happen now, otherwise -verbose:sizes will not work, as verbose 
 			 * support is initialized during this stage.
 			 */
+		    printf ("in gc's ALL_LIBRARIES_LOADED!\n");
 			rc = gcInitializeDefaults(vm);
 			break;
 
