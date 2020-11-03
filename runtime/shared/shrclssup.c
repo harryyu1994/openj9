@@ -279,6 +279,15 @@ IDATA J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved)
 	}
 
 	switch(stage) {
+
+
+	case ALL_LIBRARIES_LOADED :
+	{
+		print ("in all libraries loaded stage\n");
+		print ("call a shr api! %d\n", j9shr_isPlatformDefaultPersistent(vm));
+		break;
+	}
+
 	/* This code detects "none" as part of Xshareclasses and unloads the DLL if it is found. Must therefore be in this stage or earlier */
 	case DLL_LOAD_TABLE_FINALIZED :
 	{
