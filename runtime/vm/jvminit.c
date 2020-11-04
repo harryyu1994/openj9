@@ -6333,6 +6333,10 @@ protectedInitializeJavaVM(J9PortLibrary* portLibrary, void * userData)
 		goto error;
 	}
 
+	if (JNI_OK != (stageRC = runInitializationStage(vm, LOAD_BY_DEFAULT_INIT))) {
+		goto error;
+	}
+
 	if (JNI_OK != (stageRC = runInitializationStage(vm, ALL_LIBRARIES_LOADED))) {
 		goto error;
 	}
@@ -6799,6 +6803,8 @@ static const char* getNameForStage(IDATA stage) {
 			return "PORT_LIBRARY_GUARANTEED";
 		case ALL_DEFAULT_LIBRARIES_LOADED :
 			return "ALL_DEFAULT_LIBRARIES_LOADED";
+		case LOAD_BY_DEFAULT_INIT:
+			return "LOAD_BY_DEFAULT_INIT";
 		case ALL_LIBRARIES_LOADED :
 			return "ALL_LIBRARIES_LOADED";
 		case DLL_LOAD_TABLE_FINALIZED :

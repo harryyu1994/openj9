@@ -279,9 +279,9 @@ IDATA J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved)
 	}
 
 	switch(stage) {
-	case LOAD_BY_DEFAULT :
+	case LOAD_BY_DEFAULT_INIT :
 	{
-		printf ("in LOAD_BY_DEFAULT stage\n");
+		printf ("in LOAD_BY_DEFAULT_INIT stage\n");
 		printf ("call a shr api! %d\n", j9shr_isPlatformDefaultPersistent(vm));
 		break;
 	}
