@@ -47,6 +47,7 @@ static void hookVmShutdown(J9HookInterface **hook, UDATA eventNum, void *eventDa
 IDATA
 J9VMDllMain(J9JavaVM *vm, IDATA stage, void *reserved)
 {
+	printf ("vmcheck.c\n");
 	if (stage == ALL_VM_ARGS_CONSUMED) {
 		const char *options = "";
 		IDATA xcheckVMIndex = FIND_AND_CONSUME_ARG(OPTIONAL_LIST_MATCH, "-Xcheck:vm", NULL);

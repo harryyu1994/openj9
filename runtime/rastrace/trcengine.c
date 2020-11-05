@@ -183,6 +183,7 @@ J9VMDllMain(J9JavaVM *vm, IDATA stage, void *reserved)
 
 	PORT_ACCESS_FROM_JAVAVM( vm );
 
+	printf ("trcengine.c\n");
 	switch(stage) {
 	case ALL_LIBRARIES_LOADED:
 		if (vm->j9rasGlobalStorage == NULL) {

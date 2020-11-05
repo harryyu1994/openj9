@@ -100,7 +100,7 @@ J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved)
 	IDATA rc;
 
 	PORT_ACCESS_FROM_JAVAVM(vm);
-
+	printf ("jnicheck.c\n");
 	switch(stage) {
 		case ALL_VM_ARGS_CONSUMED:
 			hook = vm->internalVMFunctions->getVMHookInterface(vm);

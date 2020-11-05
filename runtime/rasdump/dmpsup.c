@@ -1432,7 +1432,7 @@ J9VMDllMain(J9JavaVM *vm, IDATA stage, void *reserved)
 	J9VMDllLoadInfo* loadInfo;
 	RasGlobalStorage *tempRasGbl;
 	J9HookInterface** hook = vm->internalVMFunctions->getVMHookInterface(vm);
-	
+	printf("in dmpsup.c\n");
 	PORT_ACCESS_FROM_JAVAVM(vm);
 
 	switch (stage)

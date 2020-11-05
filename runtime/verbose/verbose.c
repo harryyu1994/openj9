@@ -727,6 +727,7 @@ IDATA J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved) {
 
 	J9MemoryManagerVerboseInterface *mmFuncTable = (J9MemoryManagerVerboseInterface *) ((vm->memoryManagerFunctions == NULL) ? NULL : vm->memoryManagerFunctions->getVerboseGCFunctionTable(vm));
 	
+	printf ("verbose.c\n");
 	switch(stage) {
 		case ALL_DEFAULT_LIBRARIES_LOADED:
 			if (0 != initZipLibrary(vm->portLibrary, vm->j2seRootDirectory)) {

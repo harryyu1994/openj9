@@ -116,7 +116,7 @@ IDATA J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved)
 	pool_state poolState;
 	J9JVMTIAgentLibrary * agentLibrary;
 	J9JVMTIData * jvmtiData;
-
+	printf ("in jvmtiStartup.c\n");
 	switch(stage) {
 
 		case ALL_VM_ARGS_CONSUMED :

@@ -66,6 +66,7 @@ static IDATA OnUnload(J9JavaVM * javaVM);
 IDATA 
 J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved) 
 {
+	printf ("gcchk.cpp\n");
 	if (stage == ALL_VM_ARGS_CONSUMED) {
 		const char* options = "";
 		IDATA xcheckGCIndex = FIND_AND_CONSUME_ARG( OPTIONAL_LIST_MATCH, "-Xcheck:gc", NULL );

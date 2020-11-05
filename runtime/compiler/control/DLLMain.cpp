@@ -56,6 +56,7 @@ extern bool isQuickstart;
 
 IDATA J9VMDllMain(J9JavaVM* vm, IDATA stage, void * reserved)
    {
+   printf ("jit dll\n");
    J9JITConfig * jitConfig = 0;
    UDATA initialFlags = 0;
    J9VMDllLoadInfo* loadInfo = FIND_DLL_TABLE_ENTRY( THIS_DLL_NAME );

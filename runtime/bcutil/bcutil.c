@@ -127,6 +127,7 @@ bcutil_J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved)
 	PORT_ACCESS_FROM_JAVAVM(vm);
 	VMI_ACCESS_FROM_JAVAVM((JavaVM*)vm);
 
+	printf ("bcutil.c\n");
 #define BUFFERS_ALLOC_STAGE BYTECODE_TABLE_SET			/* defined separately to ensure dependencies below */
 
 	switch(stage) {

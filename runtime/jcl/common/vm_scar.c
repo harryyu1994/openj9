@@ -329,7 +329,7 @@ J9VMDllMain(J9JavaVM* vm, IDATA stage, void* reserved)
 	I_32 hookReturnValue = JNI_OK;
 	I_32* returnValuePointer = &hookReturnValue;
 	J9InternalVMFunctions *vmFuncs = vm->internalVMFunctions;
-
+	printf ("vm_scar.c\n");
 	switch(stage) {
 		case ALL_LIBRARIES_LOADED:
 			returnVal = initializeUnsafeMemoryTracking(vm);

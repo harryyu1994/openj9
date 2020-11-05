@@ -3886,6 +3886,7 @@ setJ9ThreadSchedulingAlgorithm(J9JavaVM *javaVM)
 IDATA
 threadInitStages(J9JavaVM* vm, IDATA stage, void* reserved)
 {
+	printf ("theadInitStage");
 	J9VMDllLoadInfo* loadInfo;
 	IDATA returnVal = J9VMDLLMAIN_OK;
 	IDATA parseError = 0;

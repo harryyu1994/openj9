@@ -2642,7 +2642,7 @@ _done:
  */
 IDATA  
 j9bcv_J9VMDllMain (J9JavaVM* vm, IDATA stage, void* reserved)
-{
+{	printf ("bcverify.c\n");
 	J9BytecodeVerificationData* verifyData = NULL;
 	char optionValuesBuffer[128];					/* Needs to be big enough to hold -Xverify option values */
 	char* optionValuesBufferPtr = optionValuesBuffer;
