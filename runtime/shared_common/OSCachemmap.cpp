@@ -189,6 +189,7 @@ SH_OSCachemmap::startup(J9JavaVM* vm, const char* ctrlDirName, UDATA cacheDirPer
 		goto _errorPreFileOpen;
 	}
 
+	// try to open file here? no just initialize some fields
 	if (commonStartup(vm, ctrlDirName, cacheDirPerm, cacheName, piconfig, createFlag, verboseFlags, runtimeFlags, openMode, versionData) != 0) {
 		Trc_SHR_OSC_Mmap_startup_commonStartupFailure();
 		goto _errorPreFileOpen;
@@ -207,6 +208,7 @@ SH_OSCachemmap::startup(J9JavaVM* vm, const char* ctrlDirName, UDATA cacheDirPer
 	}
 
 	/* Open the file */
+	// now we open the file
 	if (!openCacheFile(_createFlags & J9SH_OSCACHE_CREATE, &lastErrorInfo)) {
 		Trc_SHR_OSC_Mmap_startup_badfileopen(_cachePathName);
 		errorHandler(J9NLS_SHRC_OSCACHE_MMAP_STARTUP_FILEOPEN_ERROR, &lastErrorInfo); /* TODO: ADD FILE NAME */
@@ -365,7 +367,10 @@ SH_OSCachemmap::startup(J9JavaVM* vm, const char* ctrlDirName, UDATA cacheDirPer
 			}
 		}
 
+		// internal attach actually loads the entire file into memory using mmap
+		// we need to modify it so that 
 		rc = internalAttach(true, _activeGeneration);
+
 		if (0 != rc) {
 			errorCode = rc;
 			Trc_SHR_OSC_Mmap_startup_badAttach();
@@ -989,6 +994,7 @@ SH_OSCachemmap::internalAttach(bool isNewCache, UDATA generation)
 #endif
 
 	/* Map the file */
+	// need to figure out how j9mmap_map_file works
 	_mapFileHandle = j9mmap_map_file(_fileHandle, 0, (UDATA)_actualFileLength, _cachePathName, accessFlags, J9MEM_CATEGORY_CLASSES_SHC_CACHE);
 	if ((NULL == _mapFileHandle) || (NULL == _mapFileHandle->pointer)) {
 		lastErrorInfo.lastErrorCode = j9error_last_error_number();
@@ -1006,6 +1012,7 @@ SH_OSCachemmap::internalAttach(bool isNewCache, UDATA generation)
 		U_32* dataLengthField;
 
 		/* Get the values from the header */
+		// this is how to read from header!!
 		if ((dataLengthField = (U_32*)getMmapHeaderFieldAddressForGen(_headerStart, generation, OSCACHE_HEADER_FIELD_DATA_LENGTH))) {
 			_dataLength = *dataLengthField;
 		}

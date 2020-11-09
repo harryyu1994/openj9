@@ -71,7 +71,9 @@ typedef struct OSCache_mmap_header2 {
 	I_32 headerLock;
 	I_32 attachLock;
 	I_32 dataLocks[J9SH_OSCACHE_MMAP_LOCK_COUNT];
-	U_32 unused32[5];
+	U_32 compressedReferenceShift;
+	U_32 gcPolicy;
+	U_32 unused32[3];
 	U_64 unused64[5];
 } OSCache_mmap_header2;
 
@@ -86,6 +88,8 @@ typedef OSCache_mmap_header1 OSCachemmap_header_version_G03;
 #define OSCACHEMMAP_HEADER_FIELD_HEADER_LOCK 1004
 #define OSCACHEMMAP_HEADER_FIELD_ATTACH_LOCK 1005
 #define OSCACHEMMAP_HEADER_FIELD_DATA_LOCKS 1006
+#define OSCACHEMMAP_HEADER_FIELD_COMPRESSED_REFERENCE_SHIFT 1007
+#define OSCACHEMMAP_HEADER_FIELD_GC_POLICIES 1008
 
 /**
  * This enum contains constants that are used to indicate the reason for not allowing access to the cache file.

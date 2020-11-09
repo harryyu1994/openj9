@@ -470,6 +470,10 @@ SH_OSCacheFile::getMmapHeaderFieldOffsetForGen(UDATA headerGen, UDATA fieldID)
 			return offsetof(OSCachemmap_header_version_current, attachLock);
 		case OSCACHEMMAP_HEADER_FIELD_DATA_LOCKS :
 			return offsetof(OSCachemmap_header_version_current, dataLocks);
+		case OSCACHEMMAP_HEADER_FIELD_COMPRESSED_REFERENCE_SHIFT :
+			return offsetof(OSCachemmap_header_version_current, compressedReferenceShift);
+		case OSCACHEMMAP_HEADER_FIELD_GC_POLICIES :
+			return offsetof(OSCachemmap_header_version_current, gcPolicy);
 		default :
 		{
 			IDATA osc_offset = getHeaderFieldOffsetForGen(headerGen, fieldID);

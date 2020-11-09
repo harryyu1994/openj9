@@ -34,6 +34,7 @@ UDATA j9shr_updateAttachedUDATA(J9VMThread* currentThread, const void* addressIn
 void j9shr_freeAttachedDataDescriptor(J9VMThread* currentThread, J9SharedDataDescriptor* data);
 const U_8* j9shr_storeCompiledMethod(J9VMThread* currentThread, const J9ROMMethod* romMethod, const U_8* dataStart, UDATA dataSize, const U_8* codeStart, UDATA codeSize, UDATA forceReplace);
 UDATA j9shr_getJavacoreData(J9JavaVM *vm, J9SharedClassJavacoreDataDescriptor* descriptor);
+IDATA j9shr_earlyInit(J9JavaVM *vm, UDATA loadFlags, UDATA* nonfatal);
 IDATA j9shr_init(J9JavaVM *vm, UDATA loadFlags, UDATA* nonfatal);
 IDATA j9shr_lateInit(J9JavaVM *vm, UDATA* nonfatal);
 IDATA j9shr_sharedClassesFinishInitialization(J9JavaVM *vm);

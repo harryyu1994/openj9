@@ -3147,6 +3147,8 @@ j9shr_isBCIEnabled(J9JavaVM *vm)
  * @arg J9VMDLLMAIN_SILENT_EXIT_VM  JVM should exit silently
  * @arg J9VMDLLMAIN_OK  JVM start up should continue
  */
+
+// needing some more time to figure out how to split j9shr_init
 IDATA
 j9shr_init(J9JavaVM *vm, UDATA loadFlags, UDATA* nonfatal)
 {
