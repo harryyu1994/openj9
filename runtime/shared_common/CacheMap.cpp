@@ -499,6 +499,7 @@ SH_CacheMap::startup(J9VMThread* currentThread, J9SharedClassPreinitConfig* pico
 				*runtimeFlags &= ~J9SHR_RUNTIMEFLAG_AUTOKILL_DIFF_BUILDID;
 			}
 
+			printf ("in CacheMap.cpp, ccToUse->startup\n");
 			rc = ccToUse->startup(currentThread, piconfig, cacheMemoryUT, runtimeFlags, _verboseFlags, _cacheName, cacheDirName, cacheDirPerm, &_actualSize, &_localCrashCntr, true, cacheHasIntegrity);
 			if (rc == CC_STARTUP_OK) {
 				if (sanityWalkROMClassSegment(currentThread, ccToUse) == 0) {
