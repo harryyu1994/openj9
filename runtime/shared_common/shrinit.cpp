@@ -3438,6 +3438,7 @@ j9shr_init(J9JavaVM *vm, UDATA loadFlags, UDATA* nonfatal)
 			}
 		}
 	} else {
+		printf ("calling cm->startup in j9shr_init\n");
 		rcStartup = cm->startup(currentThread, piconfig, cacheName, ctrlDirName, vm->sharedCacheAPI->cacheDirPerm, NULL, &cacheHasIntegrity);
 	}
 
