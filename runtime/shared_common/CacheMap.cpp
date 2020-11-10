@@ -434,7 +434,7 @@ IDATA
 SH_CacheMap::startup(J9VMThread* currentThread, J9SharedClassPreinitConfig* piconfig, const char* rootName, const char* cacheDirName, UDATA cacheDirPerm, BlockPtr cacheMemoryUT, bool* cacheHasIntegrity)
 {
 
-	print ("does SH_CacheMap::startup get called?\n");
+	printf ("does SH_CacheMap::startup get called?\n");
 	IDATA itemsRead = 0;
 	IDATA rc = 0;
 	const char* fnName = "startup";
