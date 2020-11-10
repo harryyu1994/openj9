@@ -146,6 +146,7 @@ bool
 SH_OSCachesysv::startup(J9JavaVM* vm, const char* ctrlDirName, UDATA cacheDirPerm, const char* cacheName, J9SharedClassPreinitConfig* piconfig, IDATA numLocks, UDATA create,
 		UDATA verboseFlags_, U_64 runtimeFlags_, I_32 openMode, UDATA storageKeyTesting, J9PortShcVersion* versionData, SH_OSCache::SH_OSCacheInitializer* i, UDATA reason)
 {
+	printf ("called SH_OSCachesysv::startup\n");
 	IDATA retryCount;
 	IDATA shsemrc = 0;
 	IDATA semLength = 0;
