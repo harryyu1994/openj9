@@ -157,6 +157,7 @@ bool
 SH_OSCachemmap::startup(J9JavaVM* vm, const char* ctrlDirName, UDATA cacheDirPerm, const char* cacheName, J9SharedClassPreinitConfig* piconfig, IDATA numLocks,
 		UDATA createFlag, UDATA verboseFlags, U_64 runtimeFlags, I_32 openMode, UDATA storageKeyTesting, J9PortShcVersion* versionData, SH_OSCacheInitializer* initializer, UDATA reason)
 {
+	printf ("called SH_OSCachemmap::startup\n");
 	I_32 mmapCapabilities;
 	IDATA retryCntr;
 	bool creatingNewCache = false;

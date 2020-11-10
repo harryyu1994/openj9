@@ -3152,6 +3152,7 @@ j9shr_isBCIEnabled(J9JavaVM *vm)
 IDATA
 j9shr_init(J9JavaVM *vm, UDATA loadFlags, UDATA* nonfatal)
 {
+	printf ("in shrinit.cpp, j9shr_init\n");
   	/* TODO: need to get root cache name from VM parameters. */
 	const char * fname = "j9shr_init";
 	UDATA memBytesNeeded = 0;
