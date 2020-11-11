@@ -74,6 +74,8 @@ SH_OSCachemmap::SH_OSCachemmap(J9PortLibrary* portLibrary, J9JavaVM* vm, const c
 {
 	Trc_SHR_OSC_Mmap_Constructor_Entry(cacheName, piconfig->sharedClassCacheSize, numLocks, createFlag, verboseFlags);
 	initialize(portLibrary, NULL, OSCACHE_CURRENT_CACHE_GEN, OSCACHE_CURRENT_LAYER_LAYER);
+	// startup is called in the constructor!!
+	printf ("calling SH_OSCachemmap::startup\n");
 	startup(vm, cacheDirName, J9SH_DIRPERM_ABSENT, cacheName, piconfig, numLocks, createFlag, verboseFlags, runtimeFlags, openMode, 0, versionData, initializer, SHR_STARTUP_REASON_NORMAL);
 	Trc_SHR_OSC_Mmap_Constructor_Exit();
 }

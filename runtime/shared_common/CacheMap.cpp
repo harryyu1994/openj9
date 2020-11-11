@@ -274,6 +274,7 @@ SH_CacheMap::newInstanceForStats(J9JavaVM* vm, SH_CacheMap* memForConstructor, c
 void
 SH_CacheMap::initialize(J9JavaVM* vm, J9SharedClassConfig* sharedClassConfig, BlockPtr memForConstructor, const char* cacheName, I_32 cacheTypeRequired, I_8 topLayer, bool startupForStats)
 {
+	printf ("in SH_CacheMap::initialize\n");
 	BlockPtr allocPtr = memForConstructor;
 
 	Trc_SHR_CM_initialize_Entry1(UnitTest::unitTest);

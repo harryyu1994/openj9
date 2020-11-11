@@ -1043,7 +1043,7 @@ SH_CompositeCacheImpl::startup(J9VMThread* currentThread, J9SharedClassPreinitCo
 
 		/* Note that OSCache startup does not leave any kind of lock on the cache, so the cache file could in theory
 		 * be recreated by another process whenever we're not holding a lock on it. This can happen until attach() is called */
-
+		printf ("_oscache->startup in SH_CompositeCacheImpl::startup()\n");
 		OSCStarted = _oscache->startup(vm, ctrlDirName, cacheDirPerm, rootName, piconfig, ((_ccHead == NULL) ? SH_CompositeCacheImpl::getNumRequiredOSLocks() : 0), createFlags, _verboseFlags, *_runtimeFlags, openMode, vm->sharedCacheAPI->storageKeyTesting, &versionData, headerInit, SHR_STARTUP_REASON_NORMAL);
 
 		if ((J9_ARE_ALL_BITS_SET(*_runtimeFlags, J9SHR_RUNTIMEFLAG_ENABLE_TEST_BAD_BUILDID))
