@@ -545,7 +545,7 @@ SH_OSCache::newInstance(J9PortLibrary* portlib, SH_OSCache* memForConstructor, c
 	}
 	Trc_SHR_OSC_newInstance_initializingNewObject();
 	newOSC->initialize(PORTLIB, ((char*)memForConstructor + SH_OSCache::getRequiredConstrBytes()), generation, layer);
-	print ("in SH_OSCache::newInstance \n");
+	printf ("in SH_OSCache::newInstance \n");
 	Trc_SHR_OSC_newInstance_Exit(newOSC);
 	return newOSC;
 }
