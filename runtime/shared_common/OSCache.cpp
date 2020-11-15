@@ -195,6 +195,8 @@ SH_OSCache::removeCacheVersionAndGen(char* buffer, UDATA bufferSize, UDATA versi
 IDATA
 SH_OSCache::getCacheDir(J9JavaVM* vm, const char* ctrlDirName, char* buffer, UDATA bufferSize, U_32 cacheType, bool allowVerbose)
 {
+	printf ("getCacheDir %s\n", ctrlDirName);
+	// J9SHMEM_GETDIR_USE_USERHOME
 	PORT_ACCESS_FROM_JAVAVM(vm);
 	IDATA rc;
 	BOOLEAN appendBaseDir;
@@ -346,6 +348,19 @@ SH_OSCache::getGenerationFromName(const char* cacheNameWithVGen)
 IDATA
 SH_OSCache::commonStartup(J9JavaVM* vm, const char* ctrlDirName, UDATA cacheDirPerm, const char* cacheName, J9SharedClassPreinitConfig* piconfig, UDATA createFlag, UDATA verboseFlags, U_64 runtimeFlags, I_32 openMode, J9PortShcVersion* versionData)
 {
+// sets these variables
+// _config
+// _verboseFlags
+// _openMode
+// _createFlags
+// _runtimeFlags
+// _isUserSpecifiedCacheDir
+
+// intializes _cacheDirName using SH_OSCache::getCacheDir
+// _cacheName
+// _cacheNameWithVGen
+// _doCheckBuildID
+
 	PORT_ACCESS_FROM_PORT(_portLibrary);
 
 	UDATA cacheNameLen = 0;

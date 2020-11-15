@@ -274,7 +274,7 @@ SH_CacheMap::newInstanceForStats(J9JavaVM* vm, SH_CacheMap* memForConstructor, c
 void
 SH_CacheMap::initialize(J9JavaVM* vm, J9SharedClassConfig* sharedClassConfig, BlockPtr memForConstructor, const char* cacheName, I_32 cacheTypeRequired, I_8 topLayer, bool startupForStats)
 {
-	printf ("in SH_CacheMap::initialize\n");
+	printf ("in SH_CacheMap::initialize 1\n");
 	BlockPtr allocPtr = memForConstructor;
 
 	Trc_SHR_CM_initialize_Entry1(UnitTest::unitTest);
@@ -431,6 +431,7 @@ SH_CacheMap::sanityWalkROMClassSegment(J9VMThread* currentThread, SH_CompositeCa
  * 
  * @return 0 on success or -1 for failure
  */
+// called twice??
 IDATA 
 SH_CacheMap::startup(J9VMThread* currentThread, J9SharedClassPreinitConfig* piconfig, const char* rootName, const char* cacheDirName, UDATA cacheDirPerm, BlockPtr cacheMemoryUT, bool* cacheHasIntegrity)
 {

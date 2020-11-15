@@ -159,6 +159,31 @@ bool
 SH_OSCachemmap::startup(J9JavaVM* vm, const char* ctrlDirName, UDATA cacheDirPerm, const char* cacheName, J9SharedClassPreinitConfig* piconfig, IDATA numLocks,
 		UDATA createFlag, UDATA verboseFlags, U_64 runtimeFlags, I_32 openMode, UDATA storageKeyTesting, J9PortShcVersion* versionData, SH_OSCacheInitializer* initializer, UDATA reason)
 {
+// input:
+	// ctrlDirName
+	// cacheDirPerm
+	// cacheName
+	// what is ctrlDirName??
+
+// creatingNewCache: default is false
+// defaultCacheSize: set to default. J9_SHARED_CLASS_CACHE_DEFAULT_SIZE
+// J9PortShcVersion* versionData: is passed in, contains cacheType. THis one sets it to J9PORT_SHR_CACHE_TYPE_PERSISTENT
+// mmapCapabilities = j9mmap_capabilities();
+
+// commonStartUp()
+// first thing to call is `commonStartup()`
+	// what does this do?? initializes a bunch of variables such as cacheName, cacheDir, config, runtimeFlags etc.
+// openCacheFile()
+	// initializes the file handle
+// _exitForDestroy
+
+
+// load file into memory
+// or create new file
+
+
+
+
 	printf ("called SH_OSCachemmap::startup\n");
 	I_32 mmapCapabilities;
 	IDATA retryCntr;
@@ -290,6 +315,7 @@ SH_OSCachemmap::startup(J9JavaVM* vm, const char* ctrlDirName, UDATA cacheDirPer
 		Trc_SHR_OSC_Mmap_startup_fileOpened();
 
 		if (_cacheSize <= sizeof(OSCachemmap_header_version_current)) {
+			// can't be smaller than a header
 			Trc_SHR_OSC_Mmap_startup_cacheTooSmall();
 			errorCode = J9SH_OSCACHE_CORRUPT;
 			OSC_ERR_TRACE1(J9NLS_SHRC_CC_STARTUP_CORRUPT_CACHE_SIZE_INVALID, _cacheSize);
@@ -330,6 +356,40 @@ SH_OSCachemmap::startup(J9JavaVM* vm, const char* ctrlDirName, UDATA cacheDirPer
 		}
 
 	} else {
+
+// input:
+	// ctrlDirName
+	// cacheDirPerm
+	// cacheName
+	// what is ctrlDirName??
+
+// creatingNewCache: default is false
+// defaultCacheSize: set to default. J9_SHARED_CLASS_CACHE_DEFAULT_SIZE
+// J9PortShcVersion* versionData: is passed in, contains cacheType. THis one sets it to J9PORT_SHR_CACHE_TYPE_PERSISTENT
+// mmapCapabilities = j9mmap_capabilities();
+
+// commonStartUp()
+// first thing to call is `commonStartup()`
+	// what does this do?? initializes a bunch of variables such as cacheName, cacheDir, config, runtimeFlags etc.
+// openCacheFile()
+	// initializes the file handle
+// _exitForDestroy
+
+
+// acquireHeaderWriteLock()
+// Two choices:
+	// load file into memory
+		// internalAttach()
+		// 
+	// or create new file
+		// setCacheLength()
+		// verifyCacheFileGroupAccess()
+		// internalAttach()
+		// createCacheHeader()
+		// initializeDataHeader(initializer)
+		// creatingNewCache
+
+
 		OSCachemmap_header_version_current *cacheHeader;
 		IDATA rc;
 
@@ -397,7 +457,7 @@ SH_OSCachemmap::startup(J9JavaVM* vm, const char* ctrlDirName, UDATA cacheDirPer
 		if (_verboseFlags & J9SHR_VERBOSEFLAG_ENABLE_VERBOSE) {
 			OSC_TRACE1(J9NLS_SHRC_OSCACHE_MMAP_STARTUP_CREATED, _cacheName);
 		}
-	}
+	} // end creatingNewCache
 
 	if (creatingNewCache) {
 		OSCachemmap_header_version_current *cacheHeader = (OSCachemmap_header_version_current *)_headerStart;
@@ -954,6 +1014,16 @@ SH_OSCachemmap::releaseAttachReadLock(UDATA generation)
 IDATA
 SH_OSCachemmap::internalAttach(bool isNewCache, UDATA generation)
 {
+	// internal attach is attaching a file into memory using mmap
+	// _runningReadOnly: already available
+	// _actualFileLength: _cacheSize: already available
+	// _cachePathName: already available
+	// _runtimeFlags: already availabe before entering this function
+	// _fileHandle: j9mmap_map_file(_fileHandle, 0, (UDATA)_actualFileLength, _cachePathName, accessFlags, J9MEM_CATEGORY_CLASSES_SHC_CACHE);
+	// _headerStart: _headerStart = _mapFileHandle->pointer;
+	// _dataLength: (U_32*)getMmapHeaderFieldAddressForGen(_headerStart, generation, OSCACHE_HEADER_FIELD_DATA_LENGTH))
+	// _dataStart: (J9SRP*)getMmapHeaderFieldAddressForGen(_headerStart, generation, OSCACHE_HEADER_FIELD_DATA_START))
+
 	PORT_ACCESS_FROM_PORT(_portLibrary);
 	U_32 accessFlags = _runningReadOnly ? J9PORT_MMAP_FLAG_READ : J9PORT_MMAP_FLAG_WRITE;
 	LastErrorInfo lastErrorInfo;
@@ -1023,6 +1093,7 @@ SH_OSCachemmap::internalAttach(bool isNewCache, UDATA generation)
 			goto error;
 		}
 	} else {
+		// new cache!
 		/* We don't yet have a header to read - work out the values */
 		_dataLength = (U_32)MMAP_CACHEDATASIZE(_actualFileLength);
 		_dataStart = (void*)((UDATA)_headerStart + MMAP_CACHEHEADERSIZE);
