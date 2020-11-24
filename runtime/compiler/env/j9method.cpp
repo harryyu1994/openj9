@@ -5061,6 +5061,11 @@ char *        TR_ResolvedJ9Method::classNameChars()               { return TR_J9
 char *        TR_ResolvedJ9Method::nameChars()                    { return TR_J9Method::nameChars(); }
 char *        TR_ResolvedJ9Method::signatureChars()               { return TR_J9Method::signatureChars(); }
 
+bool  TR_ResolvedJ9Method::isMHGeneratedMethod(TR_ResolvedMethod * method)
+   {
+   return TR::Compiler->cls.isMHGeneratedClass(method->classOfMethod());
+   }
+
 intptr_t
 TR_ResolvedJ9Method::getInvocationCount()
    {

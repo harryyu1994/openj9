@@ -87,6 +87,7 @@ public:
 
    bool isStringClass(uintptr_t objectPointer);
 
+   bool isMHGeneratedClass(TR_OpaqueClassBlock *);
    bool classHasIllegalStaticFinalFieldModification(TR_OpaqueClassBlock * clazzPointer);
    bool isAbstractClass(TR::Compilation *comp, TR_OpaqueClassBlock *clazzPointer);
    bool isInterfaceClass(TR::Compilation *comp, TR_OpaqueClassBlock *clazzPointer);

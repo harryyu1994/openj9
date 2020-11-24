@@ -946,3 +946,23 @@ J9::ClassEnv::isClassRefValueType(TR::Compilation *comp, TR_OpaqueClassBlock *cp
       return vm->internalVMFunctions->isClassRefQtype(j9class, cpIndex);
       }
    }
+
+bool
+J9::ClassEnv::isMHGeneratedClass(TR_OpaqueClassBlock *clazz)
+   {
+#if defined(J9VM_OPT_OPENJDK_METHODHANDLE)
+   J9Class* j9clazz = TR::Compiler->cls.convertClassOffsetToClassPtr(clazz);
+#if defined(J9VM_OPT_JITSERVER)
+   if (auto stream = TR::CompilationInfo::getStream())
+      {
+      uintptr_t classFlags = 0;
+      JITServerHelpers::getAndCacheRAMClassInfo(j9clazz, TR::compInfoPT->getClientData(), stream, JITServerHelpers::CLASSINFO_CLASS_FLAGS, (void *)&classFlags);
+      return J9_ARE_ANY_BITS_SET(classFlags, J9ClassIsGeneratedForOJDKMethodHandle);
+      }
+#endif /* defined(J9VM_OPT_JITSERVER) */
+   return J9_ARE_ANY_BITS_SET(j9clazz->classFlags, J9ClassIsGeneratedForOJDKMethodHandle);
+#else
+   return false;
+#endif
+   }
+

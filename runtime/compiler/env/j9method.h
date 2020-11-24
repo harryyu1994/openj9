@@ -182,7 +182,7 @@ protected:
 
    enum Flags
       {
-      ArchetypeSpecimen = 0x00000001, // An "instance" of an archetype method, where the varargs portion of the signature has been expanded into zero or more args
+      ArchetypeSpecimen   = 0x00000001, // An "instance" of an archetype method, where the varargs portion of the signature has been expanded into zero or more args
 
       dummyLastEnum
       };
@@ -469,6 +469,8 @@ public:
    virtual TR_ResolvedMethod *     getResolvedImproperInterfaceMethod(TR::Compilation * comp, I_32 cpIndex);
    virtual TR_ResolvedMethod *     getResolvedInterfaceMethod( TR::Compilation *, TR_OpaqueClassBlock * classObject, int32_t cpIndex);
    virtual TR_ResolvedMethod *     getResolvedVirtualMethod( TR::Compilation *, TR_OpaqueClassBlock * classObject, int32_t virtualCallOffset, bool ignoreRtResolve = true);
+
+   static bool                     isMHGeneratedMethod(TR_ResolvedMethod * method);
 
    virtual bool                    virtualMethodIsOverridden();
    virtual void                    setVirtualMethodIsOverridden();
