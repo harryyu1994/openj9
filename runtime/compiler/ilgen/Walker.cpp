@@ -3381,32 +3381,50 @@ TR_J9ByteCodeIlGenerator::genInvokeHandle(TR::SymbolReference *invokeExactSymRef
 void
 TR_J9ByteCodeIlGenerator::loadFromSideTableForInvokeDynamic(int32_t callSiteIndex)
    {
-   TR::SymbolReference *appendixSymRef = symRefTab()->findOrCreateCallSiteTableEntrySymbol(_methodSymbol, callSiteIndex);
-   TR::Node * appendixNode = loadSymbol(TR::aload, appendixSymRef);
-   if (appendixSymRef->isUnresolved())
+   TR::SymbolReference *callSiteTableEntrySymRef = symRefTab()->findOrCreateCallSiteTableEntrySymbol(_methodSymbol, callSiteIndex);
+   loadSymbol(TR::aload, callSiteTableEntrySymRef);
+   loadConstant(TR::iconst, 1); // appendix object
+   loadArrayElement(TR::Address, comp()->il.opCodeForIndirectLoad(TR::Address), false);
+   if (callSiteTableEntrySymRef->isUnresolved())
       {
       // Appendix being unresolved means the target is also unresolved.
       // Instead of creating a call to the adapter method, we construct
       // a call to linkToStatic and provide appendix and target as
       // additional parameters.
-      TR::SymbolReference *memberNameSymRef = symRefTab()->findOrCreateCallSiteTableEntrySymbol(_methodSymbol, callSiteIndex, true);
-      TR::Node * memberNameNode = loadSymbol(TR::aload, memberNameSymRef);
+      loadSymbol(TR::aload, callSiteTableEntrySymRef);
+      loadConstant(TR::iconst, 0); // membername object
+      loadArrayElement(TR::Address, comp()->il.opCodeForIndirectLoad(TR::Address), false);
+      }
+   else
+      {
+      TR::Node * appendixNode = _stack->top();
+      TR::SymbolReference * appendixSymRef = symRefTab()->refineInvokeCacheElementSymRefWithKnownObjectIndexForInvokeDynamic(_methodSymbol, appendixNode->getSymbolReference(), callSiteIndex);
+      appendixNode->setSymbolReference(appendixSymRef);
       }
    }
 
 void
 TR_J9ByteCodeIlGenerator::loadFromSideTableForInvokeHandle(int32_t cpIndex)
    {
-   TR::SymbolReference *appendixSymRef = symRefTab()->findOrCreateMethodTypeTableEntrySymbol(_methodSymbol, cpIndex);
-   TR::Node * appendixNode = loadSymbol(TR::aload, appendixSymRef);
-   if (appendixSymRef->isUnresolved())
+   TR::SymbolReference *methodTypeTableEntrySymRef = symRefTab()->findOrCreateMethodTypeTableEntrySymbol(_methodSymbol, cpIndex);
+   loadSymbol(TR::aload, methodTypeTableEntrySymRef);
+   loadConstant(TR::iconst, 1); // appendix object
+   loadArrayElement(TR::Address, comp()->il.opCodeForIndirectLoad(TR::Address), false);
+   if (methodTypeTableEntrySymRef->isUnresolved())
       {
       // Appendix being unresolved means the target is also unresolved.
       // Instead of creating a call to the adapter method, we construct
       // a call to linkToStatic and provide appendix and target as
       // additional parameters.
-      TR::SymbolReference *memberNameSymRef = symRefTab()->findOrCreateMethodTypeTableEntrySymbol(_methodSymbol, cpIndex, true);
-      TR::Node * memberNameNode = loadSymbol(TR::aload, memberNameSymRef);
+      loadSymbol(TR::aload, methodTypeTableEntrySymRef);
+      loadConstant(TR::iconst, 0); // membername object
+      loadArrayElement(TR::Address, comp()->il.opCodeForIndirectLoad(TR::Address), false);
+      }
+   else
+      {
+      TR::Node * appendixNode = _stack->top();
+      TR::SymbolReference * appendixSymRef = symRefTab()->refineInvokeCacheElementSymRefWithKnownObjectIndexForInvokeHandle(_methodSymbol, appendixNode->getSymbolReference(), cpIndex);
+      appendixNode->setSymbolReference(appendixSymRef);
       }
    }
 #endif
