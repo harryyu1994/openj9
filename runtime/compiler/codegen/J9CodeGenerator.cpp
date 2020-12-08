@@ -1075,8 +1075,19 @@ J9::CodeGenerator::lowerTreeIfNeeded(
        (node->getSymbol()->castToMethodSymbol()->getRecognizedMethod() == TR::java_lang_invoke_MethodHandle_invokeBasic))
       {
       TR::SymbolReference *vmThreadTempSlotSymRef = self()->comp()->getSymRefTab()->findOrCreateVMThreadTempSlotFieldSymbolRef();
-      TR::Node *numArgsNode = TR::Node::iconst(node, node->getNumArguments() - 1);
-      TR::Node *storeNode = TR::Node::createStore(vmThreadTempSlotSymRef, numArgsNode, TR::istore);
+      int32_t numParameterStackSlots = node->getSymbol()->castToResolvedMethodSymbol()->getNumParameterSlots();
+      TR::Node * numArgsNode = NULL;
+      TR::Node * storeNode = NULL;
+      if (self()->comp()->target().is64Bit())
+         {
+         numArgsNode = TR::Node::lconst(node, numParameterStackSlots - 1);
+         storeNode = TR::Node::createStore(vmThreadTempSlotSymRef, numArgsNode, TR::lstore);
+         }
+      else
+         {
+         numArgsNode = TR::Node::iconst(node, numParameterStackSlots - 1);
+         storeNode = TR::Node::createStore(vmThreadTempSlotSymRef, numArgsNode, TR::istore);
+         }
       storeNode->setByteCodeIndex(node->getByteCodeIndex());
       TR::TreeTop::create(self()->comp(), tt->getPrevTreeTop(), storeNode);
       }
