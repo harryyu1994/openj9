@@ -799,6 +799,31 @@ TR::SymbolValidationManager::addClassFromCPRecord(TR_OpaqueClassBlock *clazz, J9
    }
 
 bool
+TR::SymbolValidationManager::addArbitraryObjectClassFromCPRecord(TR_OpaqueClassBlock *clazz, J9ConstantPool *constantPoolOfBeholder, uint32_t cpIndex)
+   {
+   if (inHeuristicRegion())
+      return true; // to make sure not to modify _classesFromAnyCPIndex
+
+   TR_OpaqueClassBlock *beholder = _fej9->getClassFromCP(constantPoolOfBeholder);
+   SVM_ASSERT_ALREADY_VALIDATED(this, beholder);
+
+   ArbitraryObjectClassByNameRecord byName(clazz, beholder);
+   if (recordExists(&byName))
+      return true; // already have an equivalent ClassByName
+
+   bool added;
+   if (!isAlreadyValidated(clazz)) // save a ClassChainRecord
+      added = addClassRecordWithChain(new (_region) ArbitraryObjectClassByNameRecord(clazz, beholder));
+   else
+      added = addClassRecord(clazz, new (_region) ArbitraryObjectClassFromCPRecord(clazz, beholder, cpIndex));
+
+   if (added)
+      _classesFromAnyCPIndex.insert(ClassFromAnyCPIndex(clazz, beholder));
+
+   return added;
+   }
+
+bool
 TR::SymbolValidationManager::addDefiningClassFromCPRecord(TR_OpaqueClassBlock *clazz, J9ConstantPool *constantPoolOfBeholder, uint32_t cpIndex, bool isStatic)
    {
    TR_OpaqueClassBlock *beholder = _fej9->getClassFromCP(constantPoolOfBeholder);
@@ -1130,7 +1155,7 @@ TR::SymbolValidationManager::validateProfiledClassRecord(uint16_t classID, void 
    }
 
 bool
-TR::SymbolValidationManager::validateClassFromCPRecord(uint16_t classID,  uint16_t beholderID, uint32_t cpIndex)
+TR::SymbolValidationManager::validateClassFromCPRecord(uint16_t classID, uint16_t beholderID, uint32_t cpIndex)
    {
    J9Class *beholder = getJ9ClassFromID(beholderID);
    J9ConstantPool *beholderCP = J9_CP_FROM_CLASS(beholder);
@@ -1151,6 +1176,16 @@ TR::SymbolValidationManager::validateDefiningClassFromCPRecord(uint16_t classID,
    J9Class *beholder = getJ9ClassFromID(beholderID);
    J9ConstantPool *beholderCP = J9_CP_FROM_CLASS(beholder);
    return validateSymbol(classID, TR_ResolvedJ9Method::definingClassFromCPFieldRef(_comp, beholderCP, cpIndex, isStatic));
+   }
+
+bool
+TR::SymbolValidationManager::validateArbitraryObjectClassFromCPRecord(uint16_t classID, uint16_t beholderID, uint32_t cpIndex)
+   {
+   J9Class *beholder = getJ9ClassFromID(beholderID);
+   J9ConstantPool *beholderCP = J9_CP_FROM_CLASS(beholder);
+   void * stringConst = TR_ResolvedJ9Method::getStringConstantFromCP(_fej9, beholderCP, cpIndex);
+   TR_OpaqueClassBlock *clazz = _fej9->getObjectClassAt((uintptr_t)stringConst);
+   return validateSymbol(classID, clazz);
    }
 
 bool

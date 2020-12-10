@@ -343,6 +343,7 @@ public:
 
    static TR_OpaqueClassBlock *    getClassFromCP(TR_J9VMBase *fej9, J9ConstantPool *cp, TR::Compilation *comp, uint32_t cpIndex);
    static TR_OpaqueClassBlock *    getClassOfStaticFromCP(TR_J9VMBase *fej9, J9ConstantPool *cp, int32_t cpIndex);
+   static void *                   getStringConstantFromCP(TR_J9VMBase *fej9, J9ConstantPool *cp, I_32 cpIndex);
 
    virtual void *                  ramConstantPool();
    virtual void *                  constantPool();

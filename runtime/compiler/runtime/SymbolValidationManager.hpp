@@ -228,6 +228,23 @@ struct DefiningClassFromCPRecord : public ClassValidationRecord
    bool      _isStatic;
    };
 
+struct ArbitraryObjectClassFromCPRecord : public ClassValidationRecord
+   {
+   ArbitraryObjectClassFromCPRecord(TR_OpaqueClassBlock *clazz, TR_OpaqueClassBlock *beholder, uint32_t cpIndex)
+      : ClassValidationRecord(TR_ValidateStaticClassFromCP),
+        _class(clazz),
+        _beholder(beholder),
+        _cpIndex(cpIndex)
+      {}
+
+   virtual bool isLessThanWithinKind(SymbolValidationRecord *other);
+   virtual void printFields();
+
+   TR_OpaqueClassBlock * _class;
+   TR_OpaqueClassBlock * _beholder;
+   uint32_t  _cpIndex;
+   };
+
 struct StaticClassFromCPRecord : public ClassValidationRecord
    {
    StaticClassFromCPRecord(TR_OpaqueClassBlock *clazz, TR_OpaqueClassBlock *beholder, uint32_t cpIndex)

@@ -1328,6 +1328,12 @@ J9::SymbolReferenceTable::findOrCreateStringSymbol(TR::ResolvedMethodSymbol * ow
       TR::VMAccessCriticalSection constantCriticalSection(comp()->fej9());
       TR_OpaqueClassBlock *clazz = comp()->fej9()->getObjectClassAt((uintptr_t)stringConst);
       isString = comp()->fej9()->isString(clazz);
+      
+      if (!isString)
+         {
+         // it is patched, add an validation record for it
+         addArbitraryObjectClassFromCPRecord(clazz, )
+         }
       }
 
    if (isString)

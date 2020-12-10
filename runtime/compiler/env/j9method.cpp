@@ -6297,6 +6297,14 @@ TR_ResolvedJ9Method::getClassFromCP(TR_J9VMBase *fej9, J9ConstantPool *cp, TR::C
    return result;
    }
 
+void *
+TR_ResolvedJ9Method::getStringConstantFromCP(TR_J9VMBase *fej9, J9ConstantPool *cp, I_32 cpIndex)
+   {
+   TR_ASSERT(cpIndex != -1, "cpIndex shouldn't be -1");
+   TR::VMAccessCriticalSection getClassFromConstantPool(fej9);
+   return (void *) ((U_8 *)&(((J9RAMStringRef *) cp->romConstantPool)[cpIndex].stringObject));
+   }
+
 TR_OpaqueClassBlock *
 TR_ResolvedJ9Method::getClassFromConstantPool(TR::Compilation * comp, uint32_t cpIndex, bool)
    {
