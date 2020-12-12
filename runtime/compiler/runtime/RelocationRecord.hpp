@@ -1341,6 +1341,18 @@ class TR_RelocationRecordValidateClass : public TR_RelocationRecordConstantPoolW
       virtual int32_t failureCode();
    };
 
+class TR_RelocationRecordValidateArbitraryObjectClass : public TR_RelocationRecordValidateClass
+   {
+   public:
+      TR_RelocationRecordValidateInstanceField() {}
+      TR_RelocationRecordValidateInstanceField(TR_RelocationRuntime *reloRuntime, TR_RelocationRecordBinaryTemplate *record) : TR_RelocationRecordValidateClass(reloRuntime, record) {}
+      virtual char *name();      
+      virtual int32_t applyRelocation(TR_RelocationRuntime *reloRuntime, TR_RelocationTarget *reloTarget, uint8_t *reloLocation);
+
+   protected:
+      virtual int32_t failureCode();
+   };
+
 class TR_RelocationRecordValidateInstanceField : public TR_RelocationRecordValidateClass
    {
    public:
