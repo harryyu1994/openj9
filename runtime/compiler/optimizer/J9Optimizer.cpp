@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2020 IBM Corp. and others
+ * Copyright (c) 2000, 2021 IBM Corp. and others
  *
  * This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License 2.0 which accompanies this
@@ -80,6 +80,7 @@
 #include "optimizer/VarHandleTransformer.hpp"
 #include "optimizer/StaticFinalFieldFolding.hpp"
 #include "optimizer/HandleRecompilationOps.hpp"
+#include "optimizer/MethodHandleTransformer.hpp"
 
 
 static const OptimizationStrategy J9EarlyGlobalOpts[] =
@@ -799,6 +800,8 @@ J9::Optimizer::Optimizer(TR::Compilation *comp, TR::ResolvedMethodSymbol *method
       new (comp->allocator()) TR::OptimizationManager(self(), TR::SwitchAnalyzer::create, OMR::switchAnalyzer);
    _opts[OMR::varHandleTransformer] =
       new (comp->allocator()) TR::OptimizationManager(self(), TR_VarHandleTransformer::create, OMR::varHandleTransformer);
+   _opts[OMR::methodHandleTransformer] =
+      new (comp->allocator()) TR::OptimizationManager(self(), TR_MethodHandleTransformer::create, OMR::methodHandleTransformer);
    _opts[OMR::unsafeFastPath] =
       new (comp->allocator()) TR::OptimizationManager(self(), TR_UnsafeFastPath::create, OMR::unsafeFastPath);
    _opts[OMR::idiomRecognition] =
